@@ -23,18 +23,12 @@ namespace mymoneytracker
         public MainWindow()
         {
             InitializeComponent();
-            
-            TransactionModel t1 = new TransactionModel();
-            t1.Date = DateTime.Now.ToFileTime().ToString();
-            t1.Payee = DateTime.Now.ToFileTime().ToString();
 
-            SqliteDataAccess.SaveTransaction(t1);
-
-            var saved = SqliteDataAccess.LoadTransactions();
-            Console.WriteLine($"got saved with len {saved.Count}");
+            List<TransactionModel> saved = SqliteDataAccess.LoadTransactions();
+            Recent_Transactions.DataContext = saved;
         }
 
-        private void Recent_Transactions_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            private void Recent_Transactions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }

@@ -35,7 +35,6 @@ namespace mymoneytracker
             string cs = ConfigurationManager.ConnectionStrings[id].ConnectionString;
             string dbPathRel = cs.Split('=', ';')[1].Substring(2);
             string dbPathAbs = Path.Combine(Directory.GetCurrentDirectory(), dbPathRel);
-
             Console.WriteLine($"I loaded DB {dbPathAbs} from relative path {dbPathRel} from connection string {cs}");
             return cs;
         }

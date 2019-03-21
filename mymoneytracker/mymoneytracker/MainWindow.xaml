@@ -7,12 +7,14 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <DataGrid x:Name="Recent_Transactions" HorizontalAlignment="Left" Height="296" VerticalAlignment="Top" Width="633" Margin="10,113,0,0" SelectionChanged="Recent_Transactions_SelectionChanged">
+        <DataGrid x:Name="Recent_Transactions" HorizontalAlignment="Left" Height="296" VerticalAlignment="Top" Width="633" Margin="10,113,0,0" SelectionChanged="Recent_Transactions_SelectionChanged" ItemsSource="{Binding}"
+  AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Date"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Amount"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Payee"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Category"/>
+                <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*" />
+                <DataGridTextColumn Header="Amount" Binding="{Binding Amount}" Width="*" />
+                <DataGridTextColumn Header="Payee" Binding="{Binding Payee}" Width="*" />
+                <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*" />
+                <DataGridTextColumn Header="Notes" Binding="{Binding Notes}" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
