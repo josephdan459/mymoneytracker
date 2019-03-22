@@ -5,17 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:mymoneytracker"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="My Money Tracker" Height="600" Width="900">
     <Grid>
-        <DataGrid x:Name="Recent_Transactions" HorizontalAlignment="Left" Height="296" VerticalAlignment="Top" Width="633" Margin="10,113,0,0" SelectionChanged="Recent_Transactions_SelectionChanged" ItemsSource="{Binding}"
-  AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*" />
-                <DataGridTextColumn Header="Amount" Binding="{Binding Amount}" Width="*" />
-                <DataGridTextColumn Header="Payee" Binding="{Binding Payee}" Width="*" />
-                <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*" />
-                <DataGridTextColumn Header="Notes" Binding="{Binding Notes}" Width="*" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <TabControl>
+            <TabItem Header="Transactions">
+                <Canvas>
+                    <Label Content="Here you can view all recent transactions and add new ones" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
+                    <DataGrid x:Name="Recent_Transactions" HorizontalAlignment="Left" Height="446" VerticalAlignment="Top" Width="872" Margin="10,113,0,0" SelectionChanged="Recent_Transactions_SelectionChanged" ItemsSource="{Binding}"
+      AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*" />
+                            <DataGridTextColumn Header="Amount" Binding="{Binding Amount}" Width="*" />
+                            <DataGridTextColumn Header="Payee" Binding="{Binding Payee}" Width="*" />
+                            <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*" />
+                            <DataGridTextColumn Header="Notes" Binding="{Binding Notes}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Canvas>
+            </TabItem>
+            <TabItem Header="Rules" >
+                <Canvas>
+                    <Label Content="Here you can view all classification rules and add new ones" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
+                </Canvas>
+            </TabItem>
+            <TabItem Header="Reports">
+                <Canvas>
+                    <Label Content="Here you can run reports" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
+                </Canvas>
+            </TabItem>
+            <TabItem Header="Options">
+                <Canvas>
+                    <Label Content="Here you can change any application configuration settings" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
+                </Canvas>
+            </TabItem>
+
+        </TabControl>
+
+
     </Grid>
 </Window>
