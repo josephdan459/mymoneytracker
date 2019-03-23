@@ -102,10 +102,10 @@ namespace mymoneytracker
                 Recent_Transactions.DataContext = saved;
 
                 dpDate.SelectedDate = DateTime.Today;
-                tbAmount.Text = "";
-                tbPayee.Text = "";
-                tbCategory.Text = "";
-                tbNotes.Text = "";
+                tbAmount.Text = "Amount";
+                tbPayee.Text = "Payee";
+                tbCategory.Text = "Category";
+                tbNotes.Text = "Notes";
             }
             catch (Exception ex)
             {
