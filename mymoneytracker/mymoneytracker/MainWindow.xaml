@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:mymoneytracker"
         mc:Ignorable="d"
-        Title="My Money Tracker" Height="600" Width="900">
+        Title="My Money Tracker" Height="678" Width="911">
     <Grid>
         <TabControl>
             <TabItem Header="Transactions">
                 <Canvas>
                     <Label Content="Here you can view all recent transactions and add new ones" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
-                    <Button Content="Delete Transaction" Click="DeleteTransactionButtonClick" Canvas.Left="163" Canvas.Top="78" Width="125"/>
-                    <DataGrid x:Name="Recent_Transactions" HorizontalAlignment="Left" Height="446" VerticalAlignment="Top" Width="872" Margin="10,113,0,0" SelectionChanged="Recent_Transactions_SelectionChanged" ItemsSource="{Binding}"
-      AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True">
+                    <Button Content="Delete Transaction" Click="DeleteTransactionButtonClick" Canvas.Left="169" Canvas.Top="127" Width="120"/>
+                    <DataGrid x:Name="Recent_Transactions" HorizontalAlignment="Left" Height="443" VerticalAlignment="Top" Width="872" SelectionChanged="Recent_Transactions_SelectionChanged" ItemsSource="{Binding}"
+      AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" Canvas.Left="10" Canvas.Top="162">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*" Visibility="Hidden" />
                             <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*" />
@@ -23,6 +23,12 @@
                             <DataGridTextColumn Header="Notes" Binding="{Binding Notes}" Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>
+                    <DatePicker x:Name="dpDate" Canvas.Left="10" Canvas.Top="50" Width="120"/>
+                    <Button x:Name="btnAddTransaction" Content="Add Transaction" Canvas.Left="10" Canvas.Top="127" Width="120"/>
+                    <TextBox x:Name="tbAmount" Height="23" Canvas.Left="10" TextWrapping="Wrap" Text="Amount" Canvas.Top="90" Width="120" GotFocus="TbAmount_GotFocus" />
+                    <TextBox x:Name="tbPayee" Height="23" Canvas.Left="169" TextWrapping="Wrap" Text="Payee" Canvas.Top="51" Width="120" GotFocus="TbPayee_GotFocus"  />
+                    <TextBox x:Name="tbCategory" Height="23" Canvas.Left="169" TextWrapping="Wrap" Text="Category" Canvas.Top="90" Width="120"  GotFocus="TbCategory_GotFocus"/>
+                    <TextBox x:Name="tbNotes" Height="62" Canvas.Left="321" TextWrapping="Wrap" Text="Notes" Canvas.Top="51" Width="217" GotFocus="TbNotes_GotFocus" />
 
                 </Canvas>
             </TabItem>

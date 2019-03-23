@@ -25,6 +25,7 @@ namespace mymoneytracker
         public MainWindow()
         {
             InitializeComponent();
+            dpDate.SelectedDate = DateTime.Today;
 
             this.saved = SqliteDataAccess.LoadTransactions();
             Recent_Transactions.DataContext = saved;
@@ -49,6 +50,25 @@ namespace mymoneytracker
         private void Recent_Transactions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void TbAmount_GotFocus(object sender, RoutedEventArgs e)
+        {
+            tbAmount.Text = "";
+        }
+        private void TbPayee_GotFocus(object sender, RoutedEventArgs e)
+        {
+            tbPayee.Text = "";
+        }
+
+        private void TbCategory_GotFocus(object sender, RoutedEventArgs e)
+        {
+            tbCategory.Text = "";
+        }
+
+        private void TbNotes_GotFocus(object sender, RoutedEventArgs e)
+        {
+            tbNotes.Text = "";
         }
     }
 }
