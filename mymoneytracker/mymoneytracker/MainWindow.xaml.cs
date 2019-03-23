@@ -20,15 +20,33 @@ namespace mymoneytracker
     /// </summary>
     public partial class MainWindow : Window
     {
+        private List<TransactionModel> saved;
+
         public MainWindow()
         {
             InitializeComponent();
 
-            List<TransactionModel> saved = SqliteDataAccess.LoadTransactions();
+            this.saved = SqliteDataAccess.LoadTransactions();
             Recent_Transactions.DataContext = saved;
         }
 
-            private void Recent_Transactions_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void DeleteTransactionButtonClick(object sender, RoutedEventArgs e)
+        {
+            int index = Recent_Transactions.SelectedIndex;
+            TransactionModel tm = Recent_Transactions.SelectedItem as TransactionModel;
+
+            // remove from ui            
+            saved.RemoveAt(index);
+            Recent_Transactions.Items.Refresh();
+
+            // remove from db            
+            if (tm == null || tm.Id <= 0) {
+                return;
+            }
+            SqliteDataAccess.DeleteTransactionById(tm.Id);
+        }
+        
+        private void Recent_Transactions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }

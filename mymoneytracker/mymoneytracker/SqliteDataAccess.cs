@@ -13,11 +13,16 @@ namespace mymoneytracker
 {
     public class SqliteDataAccess
     {
+
+        private static string loadTransactionsQuery = "select * from Transactions";
+        private static string saveTransactionQuery = "insert into Transactions (Date, Payee, Amount, Custom_notes, Category, Category_override) values (@Date, @Payee, @Amount, @Custom_notes, @Category, @Category_override)";
+        private static string deleteTransactionByIdQuery = "delete from Transactions where Id = @id";        
+
         public static List<TransactionModel> LoadTransactions()
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
             {
-                var output = conn.Query<TransactionModel>("select * from Transactions", new DynamicParameters());
+                var output = conn.Query<TransactionModel>(loadTransactionsQuery, new DynamicParameters());
                 return output.ToList();
             }
         }
@@ -26,7 +31,15 @@ namespace mymoneytracker
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
             {
-                conn.Execute("insert into Transactions (Date, Payee, Amount, Custom_notes, Category, Category_override) values (@Date, @Payee, @Amount, @Custom_notes, @Category, @Category_override)", transaction);
+                conn.Execute(saveTransactionQuery, transaction);
+            }
+        }
+
+        public static void DeleteTransactionById(int id)
+        {
+            using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
+            {
+                conn.Execute(deleteTransactionByIdQuery, new { id });
             }
         }
 

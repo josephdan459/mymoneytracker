@@ -11,9 +11,11 @@
             <TabItem Header="Transactions">
                 <Canvas>
                     <Label Content="Here you can view all recent transactions and add new ones" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
+                    <Button Content="Delete Transaction" Click="DeleteTransactionButtonClick" Canvas.Left="163" Canvas.Top="78" Width="125"/>
                     <DataGrid x:Name="Recent_Transactions" HorizontalAlignment="Left" Height="446" VerticalAlignment="Top" Width="872" Margin="10,113,0,0" SelectionChanged="Recent_Transactions_SelectionChanged" ItemsSource="{Binding}"
-      AutoGenerateColumns="False">
+      AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True">
                         <DataGrid.Columns>
+                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*" Visibility="Hidden" />
                             <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*" />
                             <DataGridTextColumn Header="Amount" Binding="{Binding Amount}" Width="*" />
                             <DataGridTextColumn Header="Payee" Binding="{Binding Payee}" Width="*" />
@@ -21,6 +23,7 @@
                             <DataGridTextColumn Header="Notes" Binding="{Binding Notes}" Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>
+
                 </Canvas>
             </TabItem>
             <TabItem Header="Rules" >
@@ -36,6 +39,7 @@
             <TabItem Header="Options">
                 <Canvas>
                     <Label Content="Here you can change any application configuration settings" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
+
                 </Canvas>
             </TabItem>
 
