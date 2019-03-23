@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:mymoneytracker"
         mc:Ignorable="d"
-        Title="My Money Tracker" Height="678" Width="911">
+        Title="My Money Tracker" Height="690" Width="911">
     <Grid>
         <TabControl>
             <TabItem Header="Transactions">
@@ -24,7 +24,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <DatePicker x:Name="dpDate" Canvas.Left="10" Canvas.Top="50" Width="120"/>
-                    <Button x:Name="btnAddTransaction" Content="Add Transaction" Canvas.Left="10" Canvas.Top="127" Width="120"/>
+                    <Button x:Name="btnAddTransaction" Content="Add Transaction" Canvas.Left="10" Canvas.Top="127" Width="120" Click="BtnAddTransaction_Click"/>
                     <TextBox x:Name="tbAmount" Height="23" Canvas.Left="10" TextWrapping="Wrap" Text="Amount" Canvas.Top="90" Width="120" GotFocus="TbAmount_GotFocus" />
                     <TextBox x:Name="tbPayee" Height="23" Canvas.Left="169" TextWrapping="Wrap" Text="Payee" Canvas.Top="51" Width="120" GotFocus="TbPayee_GotFocus"  />
                     <TextBox x:Name="tbCategory" Height="23" Canvas.Left="169" TextWrapping="Wrap" Text="Category" Canvas.Top="90" Width="120"  GotFocus="TbCategory_GotFocus"/>

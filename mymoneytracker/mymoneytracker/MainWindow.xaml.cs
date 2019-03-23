@@ -26,25 +26,39 @@ namespace mymoneytracker
         {
             InitializeComponent();
             dpDate.SelectedDate = DateTime.Today;
-
-            this.saved = SqliteDataAccess.LoadTransactions();
-            Recent_Transactions.DataContext = saved;
+            try
+            {
+                this.saved = SqliteDataAccess.LoadTransactions();
+                Recent_Transactions.DataContext = saved;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occured: " + ex.Message + "\n\nStack trace: " + ex.StackTrace, "Error!");
+            }
         }
 
         private void DeleteTransactionButtonClick(object sender, RoutedEventArgs e)
         {
-            int index = Recent_Transactions.SelectedIndex;
-            TransactionModel tm = Recent_Transactions.SelectedItem as TransactionModel;
+            try
+            {
+                int index = Recent_Transactions.SelectedIndex;
+                TransactionModel tm = Recent_Transactions.SelectedItem as TransactionModel;
 
-            // remove from ui            
-            saved.RemoveAt(index);
-            Recent_Transactions.Items.Refresh();
+                // remove from ui            
+                saved.RemoveAt(index);
+                Recent_Transactions.Items.Refresh();
 
-            // remove from db            
-            if (tm == null || tm.Id <= 0) {
-                return;
+                // remove from db            
+                if (tm == null || tm.Id <= 0)
+                {
+                    return;
+                }
+                SqliteDataAccess.DeleteTransactionById(tm.Id);
             }
-            SqliteDataAccess.DeleteTransactionById(tm.Id);
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occured: " + ex.Message + "\n\nStack trace: " + ex.StackTrace, "Error!");
+            }
         }
         
         private void Recent_Transactions_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -69,6 +83,34 @@ namespace mymoneytracker
         private void TbNotes_GotFocus(object sender, RoutedEventArgs e)
         {
             tbNotes.Text = "";
+        }
+
+        private void BtnAddTransaction_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                TransactionModel transaction = new TransactionModel();
+
+                transaction.Date = dpDate.SelectedDate;
+                transaction.Amount = Convert.ToDecimal(tbAmount.Text);
+                transaction.Payee = tbPayee.Text;
+                transaction.Category = tbCategory.Text;
+                transaction.Custom_notes = tbNotes.Text;
+
+                SqliteDataAccess.SaveTransaction(transaction);
+                this.saved = SqliteDataAccess.LoadTransactions();
+                Recent_Transactions.DataContext = saved;
+
+                dpDate.SelectedDate = DateTime.Today;
+                tbAmount.Text = "";
+                tbPayee.Text = "";
+                tbCategory.Text = "";
+                tbNotes.Text = "";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occured: " + ex.Message + "\n\nStack trace: " + ex.StackTrace, "Error!");
+            }
         }
     }
 }
