@@ -21,6 +21,7 @@ namespace mymoneytracker
     public partial class MainWindow : Window
     {
         private List<TransactionModel> saved;
+        private List<RuleModel> rules;
 
         public MainWindow()
         {
@@ -28,13 +29,27 @@ namespace mymoneytracker
             dpDate.SelectedDate = DateTime.Today;
             try
             {
-                this.saved = GetTransactions();                
+                LoadTransactions();                
                 Recent_Transactions.DataContext = this.saved;
+                Rules_List.DataContext = this.rules;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("An error occured: " + ex.Message + "\n\nStack trace: " + ex.StackTrace, "Error!");
             }
+        }
+
+        private void LoadTransactions()
+        {
+            // get DB data
+            var transactions = SqliteDataAccess.LoadTransactions();
+            var rules = SqliteDataAccess.LoadRules();
+
+            // apply categories to transactions
+            Categorize.ApplyCategories(transactions, rules);
+
+            this.saved = transactions;
+            this.rules = rules;
         }
 
         private List<TransactionModel> GetTransactions()
@@ -53,6 +68,7 @@ namespace mymoneytracker
         {
             try
             {
+                // todo: try just using LoadTransactions and dont delete from ui
                 // remove from ui            
                 int index = Recent_Transactions.SelectedIndex;
                 if (index < 0 || index >= Recent_Transactions.Items.Count) {
@@ -75,11 +91,6 @@ namespace mymoneytracker
             }
         }
         
-        private void Recent_Transactions_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
         private void TbAmount_GotFocus(object sender, RoutedEventArgs e)
         {
             tbAmount.Text = "";
@@ -88,17 +99,14 @@ namespace mymoneytracker
         {
             tbPayee.Text = "";
         }
-
         private void TbCategory_GotFocus(object sender, RoutedEventArgs e)
         {
             tbCategory.Text = "";
         }
-
         private void TbNotes_GotFocus(object sender, RoutedEventArgs e)
         {
             tbNotes.Text = "";
         }
-
         private void BtnAddTransaction_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -127,6 +135,60 @@ namespace mymoneytracker
             {
                 MessageBox.Show("An error occured: " + ex.Message + "\n\nStack trace: " + ex.StackTrace, "Error!");
             }
+        }
+
+
+        private void DeleteRuleButtonClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // remove from ui            
+                int index = Rules_List.SelectedIndex;
+                if (index < 0 || index >= Rules_List.Items.Count)
+                {
+                    return;
+                }
+                RuleModel rule = Rules_List.SelectedItem as RuleModel;
+                rules.RemoveAt(index);
+                Rules_List.Items.Refresh();
+
+                // remove from db                            
+                if (rule == null)
+                {
+                    return;
+                }
+                SqliteDataAccess.DeleteRuleByName(rule.Rule_name);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occured: " + ex.Message + "\n\nStack trace: " + ex.StackTrace, "Error!");
+            }
+        }
+
+        private void BtnAddRule_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // todo : handle empty/default values
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occured: " + ex.Message + "\n\nStack trace: " + ex.StackTrace, "Error!");
+            }
+        }
+
+        private void TbRuleName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            tbRuleName.Text = "";
+        }
+        private void TbRuleCategory_GotFocus(object sender, RoutedEventArgs e)
+        {
+            tbRuleCategory.Text = "";
+        }
+        private void TbRuleMatchRegex_GotFocus(object sender, RoutedEventArgs e)
+        {
+            tbRuleMatchRegex.Text = "";
         }
     }
 }

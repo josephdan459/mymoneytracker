@@ -18,6 +18,7 @@ namespace mymoneytracker
         private static string loadRulesQuery = "select * from Rules";
         private static string saveTransactionQuery = "insert into Transactions (Date, Payee, Amount, Custom_notes, Category) values (@Date, @Payee, @Amount, @Custom_notes, @Category)";
         private static string deleteTransactionByIdQuery = "delete from Transactions where Id = @id";
+        private static string deleteRuleByNameQuery = "delete from Rules where Rule_name = @name";
 
         public static List<TransactionModel> LoadTransactions()
         {
@@ -54,6 +55,14 @@ namespace mymoneytracker
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
             {
                 conn.Execute(deleteTransactionByIdQuery, new { id });
+            }
+        }
+
+        public static void DeleteRuleByName(string name)
+        {
+            using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
+            {
+                conn.Execute(deleteRuleByNameQuery, new { name });
             }
         }
 
