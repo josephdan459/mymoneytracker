@@ -28,8 +28,8 @@ namespace mymoneytracker
             dpDate.SelectedDate = DateTime.Today;
             try
             {
-                this.saved = SqliteDataAccess.LoadTransactions();
-                Recent_Transactions.DataContext = saved;
+                this.saved = GetTransactions();                
+                Recent_Transactions.DataContext = this.saved;
             }
             catch (Exception ex)
             {
@@ -37,18 +37,32 @@ namespace mymoneytracker
             }
         }
 
+        private List<TransactionModel> GetTransactions()
+        {
+            // get DB data
+            var transactions = SqliteDataAccess.LoadTransactions();
+            var rules = SqliteDataAccess.LoadRules();
+
+            // apply categories to transactions
+            Categorize.ApplyCategories(transactions, rules);
+
+            return transactions;
+        }
+
         private void DeleteTransactionButtonClick(object sender, RoutedEventArgs e)
         {
             try
             {
-                int index = Recent_Transactions.SelectedIndex;
-                TransactionModel tm = Recent_Transactions.SelectedItem as TransactionModel;
-
                 // remove from ui            
+                int index = Recent_Transactions.SelectedIndex;
+                if (index < 0 || index >= Recent_Transactions.Items.Count) {
+                    return;
+                }
+                TransactionModel tm = Recent_Transactions.SelectedItem as TransactionModel;
                 saved.RemoveAt(index);
                 Recent_Transactions.Items.Refresh();
 
-                // remove from db            
+                // remove from db                            
                 if (tm == null || tm.Id <= 0)
                 {
                     return;
@@ -89,6 +103,8 @@ namespace mymoneytracker
         {
             try
             {
+                // todo : handle empty/default values
+
                 TransactionModel transaction = new TransactionModel();
 
                 transaction.Date = dpDate.SelectedDate;
@@ -98,7 +114,7 @@ namespace mymoneytracker
                 transaction.Custom_notes = tbNotes.Text;
 
                 SqliteDataAccess.SaveTransaction(transaction);
-                this.saved = SqliteDataAccess.LoadTransactions();
+                this.saved = GetTransactions();
                 Recent_Transactions.DataContext = saved;
 
                 dpDate.SelectedDate = DateTime.Today;

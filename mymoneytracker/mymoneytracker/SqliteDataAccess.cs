@@ -15,17 +15,31 @@ namespace mymoneytracker
     {
 
         private static string loadTransactionsQuery = "select * from Transactions";
-        private static string saveTransactionQuery = "insert into Transactions (Date, Payee, Amount, Custom_notes, Category, Category_override) values (@Date, @Payee, @Amount, @Custom_notes, @Category, @Category_override)";
-        private static string deleteTransactionByIdQuery = "delete from Transactions where Id = @id";        
+        private static string loadRulesQuery = "select * from Rules";
+        private static string saveTransactionQuery = "insert into Transactions (Date, Payee, Amount, Custom_notes, Category) values (@Date, @Payee, @Amount, @Custom_notes, @Category)";
+        private static string deleteTransactionByIdQuery = "delete from Transactions where Id = @id";
 
         public static List<TransactionModel> LoadTransactions()
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
             {
                 var output = conn.Query<TransactionModel>(loadTransactionsQuery, new DynamicParameters());
+
+                // todo: fix precision loss for dollar/cent amount
+
                 return output.ToList();
             }
         }
+
+        public static List<RuleModel> LoadRules()
+        {
+            using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
+            {
+                var output = conn.Query<RuleModel>(loadRulesQuery, new DynamicParameters());
+                return output.ToList();
+            }
+        }
+
 
         public static void SaveTransaction(TransactionModel transaction)
         {
