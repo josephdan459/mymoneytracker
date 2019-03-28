@@ -143,7 +143,6 @@ namespace mymoneytracker
                 rule.Rule_name = tbRuleName.Text;
                 rule.Category = tbRuleCategory.Text;
                 rule.Payee_regex = tbRuleMatchRegex.Text;
-                // todo: inflow/outflow
                 rule.Direction = tbDirection.Text;
 
 
