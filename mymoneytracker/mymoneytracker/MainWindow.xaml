@@ -51,7 +51,7 @@
                     <TextBox x:Name="tbRuleMatchRegex" Height="23" Canvas.Left="169" TextWrapping="Wrap" Text="Match Text" Canvas.Top="51" Width="120"  GotFocus="TbRuleMatchRegex_GotFocus"/>
                     <ComboBox x:Name="tbDirection" Height="23" Width="120" Canvas.Left="169" Canvas.Top="87">
                         <ComboBoxItem Content="Inflow"/>
-                        <ComboBoxItem Content="Outflow"/>
+                        <ComboBoxItem Content="Outflow" IsSelected="True"/>
                     </ComboBox>
                 </Canvas>
             </TabItem>

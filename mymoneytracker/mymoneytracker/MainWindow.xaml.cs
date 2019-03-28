@@ -43,7 +43,7 @@ namespace mymoneytracker
             this.saved  = SqliteDataAccess.LoadTransactions();
             this.rules = SqliteDataAccess.LoadRules();
 
-            // apply categories to transactions
+            // apply current rules to current transactions
             Categorize.ApplyCategories(saved, rules);
 
             // refresh UI grids
@@ -55,15 +55,7 @@ namespace mymoneytracker
         {
             try
             {
-                // todo: try just using LoadTransactions and dont delete from ui
-                // remove from ui            
-                int index = Recent_Transactions.SelectedIndex;
-                if (index < 0 || index >= Recent_Transactions.Items.Count) {
-                    return;
-                }
                 TransactionModel tm = Recent_Transactions.SelectedItem as TransactionModel;
-
-                // remove from db                            
                 if (tm == null || tm.Id <= 0)
                 {
                     return;
@@ -127,15 +119,7 @@ namespace mymoneytracker
         {
             try
             {
-                // remove from ui            
-                int index = Rules_List.SelectedIndex;
-                if (index < 0 || index >= Rules_List.Items.Count)
-                {
-                    return;
-                }
-                RuleModel rule = Rules_List.SelectedItem as RuleModel;                
-
-                // remove from db                            
+                RuleModel rule = Rules_List.SelectedItem as RuleModel;
                 if (rule == null)
                 {
                     return;
