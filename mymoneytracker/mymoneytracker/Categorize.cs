@@ -37,7 +37,7 @@ namespace mymoneytracker
             // Tests if this rule matches the transaction. Sets appropriate category if it does.
 
             // check in/out direction constraint 
-            if ((rule.Direction == "In" && transaction.Amount < 0) || (rule.Direction == "Out" && transaction.Amount > 0))
+            if ((rule.Direction == "Inflow" && transaction.Amount < 0) || (rule.Direction == "Outflow" && transaction.Amount > 0))
             {
                 return false;
             }

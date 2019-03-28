@@ -29,9 +29,7 @@ namespace mymoneytracker
             dpDate.SelectedDate = DateTime.Today;
             try
             {
-                LoadTransactions();                
-                Recent_Transactions.DataContext = this.saved;
-                Rules_List.DataContext = this.rules;
+                RefreshUI();
             }
             catch (Exception ex)
             {
@@ -39,29 +37,18 @@ namespace mymoneytracker
             }
         }
 
-        private void LoadTransactions()
+        private void RefreshUI()
         {
             // get DB data
-            var transactions = SqliteDataAccess.LoadTransactions();
-            var rules = SqliteDataAccess.LoadRules();
+            this.saved  = SqliteDataAccess.LoadTransactions();
+            this.rules = SqliteDataAccess.LoadRules();
 
             // apply categories to transactions
-            Categorize.ApplyCategories(transactions, rules);
+            Categorize.ApplyCategories(saved, rules);
 
-            this.saved = transactions;
-            this.rules = rules;
-        }
-
-        private List<TransactionModel> GetTransactions()
-        {
-            // get DB data
-            var transactions = SqliteDataAccess.LoadTransactions();
-            var rules = SqliteDataAccess.LoadRules();
-
-            // apply categories to transactions
-            Categorize.ApplyCategories(transactions, rules);
-
-            return transactions;
+            // refresh UI grids
+            Recent_Transactions.DataContext = this.saved;
+            Rules_List.DataContext = this.rules;
         }
 
         private void DeleteTransactionButtonClick(object sender, RoutedEventArgs e)
@@ -75,8 +62,6 @@ namespace mymoneytracker
                     return;
                 }
                 TransactionModel tm = Recent_Transactions.SelectedItem as TransactionModel;
-                saved.RemoveAt(index);
-                Recent_Transactions.Items.Refresh();
 
                 // remove from db                            
                 if (tm == null || tm.Id <= 0)
@@ -84,6 +69,7 @@ namespace mymoneytracker
                     return;
                 }
                 SqliteDataAccess.DeleteTransactionById(tm.Id);
+                RefreshUI();
             }
             catch (Exception ex)
             {
@@ -122,8 +108,7 @@ namespace mymoneytracker
                 transaction.Custom_notes = tbNotes.Text;
 
                 SqliteDataAccess.SaveTransaction(transaction);
-                this.saved = GetTransactions();
-                Recent_Transactions.DataContext = saved;
+                RefreshUI();
 
                 dpDate.SelectedDate = DateTime.Today;
                 tbAmount.Text = "Amount";
@@ -148,9 +133,7 @@ namespace mymoneytracker
                 {
                     return;
                 }
-                RuleModel rule = Rules_List.SelectedItem as RuleModel;
-                rules.RemoveAt(index);
-                Rules_List.Items.Refresh();
+                RuleModel rule = Rules_List.SelectedItem as RuleModel;                
 
                 // remove from db                            
                 if (rule == null)
@@ -158,6 +141,7 @@ namespace mymoneytracker
                     return;
                 }
                 SqliteDataAccess.DeleteRuleByName(rule.Rule_name);
+                RefreshUI();
             }
             catch (Exception ex)
             {
@@ -180,8 +164,7 @@ namespace mymoneytracker
 
 
                 SqliteDataAccess.SaveRule(rule);
-                this.rules = SqliteDataAccess.LoadRules();
-                Rules_List.DataContext = this.rules;
+                RefreshUI();
 
                 tbRuleName.Text = "";
                 tbRuleCategory.Text = "";
