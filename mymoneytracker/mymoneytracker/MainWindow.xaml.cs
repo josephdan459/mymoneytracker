@@ -169,8 +169,23 @@ namespace mymoneytracker
         {
             try
             {
+                RuleModel rule = new RuleModel();
+                
                 // todo : handle empty/default values
+                rule.Rule_name = tbRuleName.Text;
+                rule.Category = tbRuleCategory.Text;
+                rule.Payee_regex = tbRuleMatchRegex.Text;
+                // todo: inflow/outflow
+                rule.Direction = tbDirection.Text;
 
+
+                SqliteDataAccess.SaveRule(rule);
+                this.rules = SqliteDataAccess.LoadRules();
+                Rules_List.DataContext = this.rules;
+
+                tbRuleName.Text = "";
+                tbRuleCategory.Text = "";
+                tbRuleMatchRegex.Text = "";
             }
             catch (Exception ex)
             {
