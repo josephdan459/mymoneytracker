@@ -12,7 +12,7 @@
                 <Canvas>
                     <Label Content="Here you can view all recent transactions and add new ones" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
                     <Button Content="Delete Transaction" Click="DeleteTransactionButtonClick" Canvas.Left="169" Canvas.Top="127" Width="120"/>
-                    <DataGrid x:Name="Recent_Transactions" HorizontalAlignment="Left" Height="443" VerticalAlignment="Top" Width="872" SelectionChanged="Recent_Transactions_SelectionChanged" ItemsSource="{Binding}"
+                    <DataGrid x:Name="Recent_Transactions" HorizontalAlignment="Left" Height="443" VerticalAlignment="Top" Width="872" ItemsSource="{Binding}"
       AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" Canvas.Left="10" Canvas.Top="162">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*" Visibility="Hidden" />
@@ -35,6 +35,24 @@
             <TabItem Header="Rules" >
                 <Canvas>
                     <Label Content="Here you can view all classification rules and add new ones" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
+                    <Button Content="Delete Rule" Click="DeleteRuleButtonClick" Canvas.Left="169" Canvas.Top="127" Width="120"/>
+                    <DataGrid x:Name="Rules_List" HorizontalAlignment="Left" Height="443" VerticalAlignment="Top" Width="872" ItemsSource="{Binding}"
+      AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" Canvas.Left="10" Canvas.Top="162">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Rule Name" Binding="{Binding Rule_name}" Width="*" Visibility="Hidden" />
+                            <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*" />
+                            <DataGridTextColumn Header="Match Text" Binding="{Binding Payee_regex}" Width="*" />
+                            <DataGridTextColumn Header="Direction" Binding="{Binding Direction}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button x:Name="btnAddRule" Content="Add Rule" Canvas.Left="10" Canvas.Top="127" Width="120" Click="BtnAddRule_Click"/>
+                    <TextBox x:Name="tbRuleName" Height="23" Canvas.Left="10" TextWrapping="Wrap" Text="Rule Name" Canvas.Top="51" Width="120" GotFocus="TbRuleName_GotFocus" />
+                    <TextBox x:Name="tbRuleCategory" Height="23" Canvas.Left="10" TextWrapping="Wrap" Text="Category" Canvas.Top="87" Width="120" GotFocus="TbRuleCategory_GotFocus"  />
+                    <TextBox x:Name="tbRuleMatchRegex" Height="23" Canvas.Left="169" TextWrapping="Wrap" Text="Match Text" Canvas.Top="51" Width="120"  GotFocus="TbRuleMatchRegex_GotFocus"/>
+                    <ComboBox x:Name="tbDirection" Height="23" Width="120" Canvas.Left="169" Canvas.Top="87">
+                        <ComboBoxItem Content="Inflow"/>
+                        <ComboBoxItem Content="Outflow" IsSelected="True"/>
+                    </ComboBox>
                 </Canvas>
             </TabItem>
             <TabItem Header="Reports">
@@ -48,6 +66,7 @@
 
                 </Canvas>
             </TabItem>
+
 
         </TabControl>
 

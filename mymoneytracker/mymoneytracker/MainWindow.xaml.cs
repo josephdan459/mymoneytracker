@@ -21,6 +21,7 @@ namespace mymoneytracker
     public partial class MainWindow : Window
     {
         private List<TransactionModel> saved;
+        private List<RuleModel> rules;
 
         public MainWindow()
         {
@@ -28,8 +29,7 @@ namespace mymoneytracker
             dpDate.SelectedDate = DateTime.Today;
             try
             {
-                this.saved = SqliteDataAccess.LoadTransactions();
-                Recent_Transactions.DataContext = saved;
+                RefreshUI();
             }
             catch (Exception ex)
             {
@@ -37,23 +37,31 @@ namespace mymoneytracker
             }
         }
 
+        private void RefreshUI()
+        {
+            // get DB data
+            this.saved  = SqliteDataAccess.LoadTransactions();
+            this.rules = SqliteDataAccess.LoadRules();
+
+            // apply current rules to current transactions
+            Categorize.ApplyCategories(saved, rules);
+
+            // refresh UI grids
+            Recent_Transactions.DataContext = this.saved;
+            Rules_List.DataContext = this.rules;
+        }
+
         private void DeleteTransactionButtonClick(object sender, RoutedEventArgs e)
         {
             try
             {
-                int index = Recent_Transactions.SelectedIndex;
                 TransactionModel tm = Recent_Transactions.SelectedItem as TransactionModel;
-
-                // remove from ui            
-                saved.RemoveAt(index);
-                Recent_Transactions.Items.Refresh();
-
-                // remove from db            
                 if (tm == null || tm.Id <= 0)
                 {
                     return;
                 }
                 SqliteDataAccess.DeleteTransactionById(tm.Id);
+                RefreshUI();
             }
             catch (Exception ex)
             {
@@ -61,11 +69,6 @@ namespace mymoneytracker
             }
         }
         
-        private void Recent_Transactions_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
         private void TbAmount_GotFocus(object sender, RoutedEventArgs e)
         {
             tbAmount.Text = "";
@@ -74,21 +77,20 @@ namespace mymoneytracker
         {
             tbPayee.Text = "";
         }
-
         private void TbCategory_GotFocus(object sender, RoutedEventArgs e)
         {
             tbCategory.Text = "";
         }
-
         private void TbNotes_GotFocus(object sender, RoutedEventArgs e)
         {
             tbNotes.Text = "";
         }
-
         private void BtnAddTransaction_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                // todo : handle empty/default values
+
                 TransactionModel transaction = new TransactionModel();
 
                 transaction.Date = dpDate.SelectedDate;
@@ -98,8 +100,7 @@ namespace mymoneytracker
                 transaction.Custom_notes = tbNotes.Text;
 
                 SqliteDataAccess.SaveTransaction(transaction);
-                this.saved = SqliteDataAccess.LoadTransactions();
-                Recent_Transactions.DataContext = saved;
+                RefreshUI();
 
                 dpDate.SelectedDate = DateTime.Today;
                 tbAmount.Text = "Amount";
@@ -111,6 +112,64 @@ namespace mymoneytracker
             {
                 MessageBox.Show("An error occured: " + ex.Message + "\n\nStack trace: " + ex.StackTrace, "Error!");
             }
+        }
+
+
+        private void DeleteRuleButtonClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                RuleModel rule = Rules_List.SelectedItem as RuleModel;
+                if (rule == null)
+                {
+                    return;
+                }
+                SqliteDataAccess.DeleteRuleByName(rule.Rule_name);
+                RefreshUI();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occured: " + ex.Message + "\n\nStack trace: " + ex.StackTrace, "Error!");
+            }
+        }
+
+        private void BtnAddRule_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                RuleModel rule = new RuleModel();
+                
+                // todo : handle empty/default values
+                rule.Rule_name = tbRuleName.Text;
+                rule.Category = tbRuleCategory.Text;
+                rule.Payee_regex = tbRuleMatchRegex.Text;
+                rule.Direction = tbDirection.Text;
+
+
+                SqliteDataAccess.SaveRule(rule);
+                RefreshUI();
+
+                tbRuleName.Text = "";
+                tbRuleCategory.Text = "";
+                tbRuleMatchRegex.Text = "";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occured: " + ex.Message + "\n\nStack trace: " + ex.StackTrace, "Error!");
+            }
+        }
+
+        private void TbRuleName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            tbRuleName.Text = "";
+        }
+        private void TbRuleCategory_GotFocus(object sender, RoutedEventArgs e)
+        {
+            tbRuleCategory.Text = "";
+        }
+        private void TbRuleMatchRegex_GotFocus(object sender, RoutedEventArgs e)
+        {
+            tbRuleMatchRegex.Text = "";
         }
     }
 }
