@@ -93,7 +93,7 @@ namespace mymoneytracker
 
                 TransactionModel transaction = new TransactionModel();
 
-                transaction.Date = dpDate.SelectedDate;
+                transaction.Date = dpDate.SelectedDate.Value.Date.ToShortDateString();
                 transaction.Amount = Convert.ToDecimal(tbAmount.Text);
                 transaction.Payee = tbPayee.Text;
                 transaction.Category = tbCategory.Text;
@@ -171,5 +171,6 @@ namespace mymoneytracker
         {
             tbRuleMatchRegex.Text = "";
         }
+
     }
 }

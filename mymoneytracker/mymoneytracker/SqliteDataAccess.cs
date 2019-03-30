@@ -26,9 +26,6 @@ namespace mymoneytracker
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
             {
                 var output = conn.Query<TransactionModel>(loadTransactionsQuery, new DynamicParameters());
-
-                // todo: fix precision loss for dollar/cent amount
-
                 return output.ToList();
             }
         }
