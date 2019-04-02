@@ -1,6 +1,0 @@
-These are a few features that I would find useful in a personal budgeting application:
-- You can manually enter transactions one-by-one
-- You can update transactions from a list like a .csv file (exported data from any bank)
-- You can easily create, save, and edit custom rules to classify transactions into categories (support regular expressions - like /.*DIRECT DEP MYCOMPANYNAME.*/ could be set to classify as 'paycheck' category)
-- You can create reports to run on any defined categories (total inflow/outflow per category over X days, etc...)
-- Your transactions and rules will still be there next time the app runs (local DB of some kind)
