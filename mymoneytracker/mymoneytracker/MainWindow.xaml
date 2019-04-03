@@ -11,33 +11,34 @@
             <TabItem Header="Transactions">
                 <Canvas>
                     <Label Content="Here you can view all recent transactions and add new ones" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
-                    <Button Content="Delete Transaction" Click="DeleteTransactionButtonClick" Canvas.Left="169" Canvas.Top="127" Width="120"/>
-                    <DataGrid x:Name="Recent_Transactions" HorizontalAlignment="Left" Height="443" VerticalAlignment="Top" Width="872" ItemsSource="{Binding}"
-      AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" Canvas.Left="10" Canvas.Top="162">
+                    
+                    <DataGrid x:Name="Recent_Transactions" HorizontalAlignment="Left" Height="443" VerticalAlignment="Top" Width="872" ItemsSource="{Binding Saved}"
+                            SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" Canvas.Left="10" Canvas.Top="162">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*" Visibility="Hidden" />
-                            <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*" />
+                            <DataGridTextColumn Header="Date"  Binding="{Binding Date}" Width="*" />
                             <DataGridTextColumn Header="Amount" Binding="{Binding Amount, StringFormat=C2}" Width="*" />
                             <DataGridTextColumn Header="Payee" Binding="{Binding Payee}" Width="*" />
                             <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*" />
                             <DataGridTextColumn Header="Notes" Binding="{Binding Custom_notes}" Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>
-                    <DatePicker x:Name="dpDate" Canvas.Left="10" Canvas.Top="50" Width="120"/>
-                    <Button x:Name="btnAddTransaction" Content="Add Transaction" Canvas.Left="10" Canvas.Top="127" Width="120" Click="BtnAddTransaction_Click"/>
-                    <TextBox x:Name="tbAmount" Height="23" Canvas.Left="10" TextWrapping="Wrap" Text="Amount" Canvas.Top="90" Width="120" GotFocus="TbAmount_GotFocus" />
-                    <TextBox x:Name="tbPayee" Height="23" Canvas.Left="169" TextWrapping="Wrap" Text="Payee" Canvas.Top="51" Width="120" GotFocus="TbPayee_GotFocus"  />
-                    <TextBox x:Name="tbCategory" Height="23" Canvas.Left="169" TextWrapping="Wrap" Text="Category" Canvas.Top="90" Width="120"  GotFocus="TbCategory_GotFocus"/>
-                    <TextBox x:Name="tbNotes" Height="62" Canvas.Left="321" TextWrapping="Wrap" Text="Notes" AcceptsReturn="True" Canvas.Top="51" Width="217" GotFocus="TbNotes_GotFocus" />
+                    <DatePicker x:Name="dpDate" Canvas.Left="10" Canvas.Top="50" Width="120" SelectedDate="{Binding NewTransaction.Date, Mode=TwoWay}"/>
 
+                    <TextBox x:Name="tbAmount" Height="23" Canvas.Left="10" TextWrapping="Wrap" Canvas.Top="90" Width="120" Text="{Binding NewTransaction.Amount, Mode=TwoWay}" GotFocus="TbAmount_GotFocus"/>
+                    <TextBox x:Name="tbPayee" Height="23" Canvas.Left="169" TextWrapping="Wrap" Canvas.Top="51" Width="120" Text="{Binding NewTransaction.Payee, Mode=TwoWay}" GotFocus="TbPayee_GotFocus"/>
+                    <TextBox x:Name="tbCategory" Height="23" Canvas.Left="169" TextWrapping="Wrap" Canvas.Top="90" Width="120" Text="{Binding NewTransaction.Category, Mode=TwoWay}" GotFocus="TbCategory_GotFocus"/>
+                    <TextBox x:Name="tbNotes" Height="62" Canvas.Left="321" TextWrapping="Wrap" AcceptsReturn="True" Canvas.Top="51" Width="217" Text="{Binding NewTransaction.Custom_notes, Mode=TwoWay}" GotFocus="TbNotes_GotFocus"/>
+                    <Button x:Name="btnAddTransaction" Content="Add Transaction" Canvas.Left="10" Canvas.Top="127" Width="120" Click="BtnAddTransaction_Click"/>
+                    <Button Content="Delete Transaction" Click="DeleteTransactionButtonClick" Canvas.Left="169" Canvas.Top="127" Width="120"/>
                 </Canvas>
             </TabItem>
             <TabItem Header="Rules" >
                 <Canvas>
                     <Label Content="Here you can view all classification rules and add new ones" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
                     <Button Content="Delete Rule" Click="DeleteRuleButtonClick" Canvas.Left="169" Canvas.Top="127" Width="120"/>
-                    <DataGrid x:Name="Rules_List" HorizontalAlignment="Left" Height="443" VerticalAlignment="Top" Width="872" ItemsSource="{Binding}"
-      AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" Canvas.Left="10" Canvas.Top="162">
+                    <DataGrid x:Name="Rules_List" HorizontalAlignment="Left" Height="443" VerticalAlignment="Top" Width="872" ItemsSource="{Binding Rules}"
+                        SelectedItem="{Binding SelectedRule, Mode=TwoWay}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" Canvas.Left="10" Canvas.Top="162">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Rule Name" Binding="{Binding Rule_name}" Width="*" Visibility="Hidden" />
                             <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*" />
@@ -46,10 +47,10 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <Button x:Name="btnAddRule" Content="Add Rule" Canvas.Left="10" Canvas.Top="127" Width="120" Click="BtnAddRule_Click"/>
-                    <TextBox x:Name="tbRuleName" Height="23" Canvas.Left="10" TextWrapping="Wrap" Text="Rule Name" Canvas.Top="51" Width="120" GotFocus="TbRuleName_GotFocus" />
-                    <TextBox x:Name="tbRuleCategory" Height="23" Canvas.Left="10" TextWrapping="Wrap" Text="Category" Canvas.Top="87" Width="120" GotFocus="TbRuleCategory_GotFocus"  />
-                    <TextBox x:Name="tbRuleMatchRegex" Height="23" Canvas.Left="169" TextWrapping="Wrap" Text="Match Text" Canvas.Top="51" Width="120"  GotFocus="TbRuleMatchRegex_GotFocus"/>
-                    <ComboBox x:Name="tbDirection" Height="23" Width="120" Canvas.Left="169" Canvas.Top="87">
+                    <TextBox x:Name="tbRuleName" Height="23" Canvas.Left="10" TextWrapping="Wrap" Text="{Binding NewRule.Rule_name, Mode=TwoWay}" Canvas.Top="51" Width="120" />
+                    <TextBox x:Name="tbRuleCategory" Height="23" Canvas.Left="10" TextWrapping="Wrap" Text="{Binding NewRule.Category, Mode=TwoWay}" Canvas.Top="87" Width="120" />
+                    <TextBox x:Name="tbRuleMatchRegex" Height="23" Canvas.Left="169" TextWrapping="Wrap" Text="{Binding NewRule.Payee_regex, Mode=TwoWay}" Canvas.Top="51" Width="120" />
+                    <ComboBox x:Name="tbDirection" Height="23" Width="120" Canvas.Left="169" Canvas.Top="87" SelectedValue="{Binding NewRule.Direction, Mode=TwoWay}">
                         <ComboBoxItem Content="Inflow"/>
                         <ComboBoxItem Content="Outflow" IsSelected="True"/>
                     </ComboBox>

@@ -8,6 +8,12 @@ namespace mymoneytracker
 {
     public class RuleModel
     {
+        public RuleModel()
+        {
+            Rule_name = "Rule Name";
+            Category = "Category";
+            Payee_regex = "Match Text";
+        }
         public string Rule_name { get; set; }
         public string Category { get; set; }
         public string Payee_regex { get; set; }        

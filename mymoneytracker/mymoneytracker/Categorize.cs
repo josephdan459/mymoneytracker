@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,7 +11,7 @@ namespace mymoneytracker
     public class Categorize
     {
 
-        public static void ApplyCategories(List<TransactionModel> transactions, List<RuleModel> rules)
+        public static void ApplyCategories(ObservableCollection<TransactionModel> transactions, ObservableCollection<RuleModel> rules)
         {
             // Iterate through each transaction and add categories for any that are not manually set
             foreach (var transaction in transactions)
@@ -22,7 +23,7 @@ namespace mymoneytracker
             }
         }
 
-        private static void CategorizeTransaction(TransactionModel transaction, List<RuleModel> rules)
+        private static void CategorizeTransaction(TransactionModel transaction, ObservableCollection<RuleModel> rules)
         {
             // Categorize transaction by trying each rule until one matches.
             foreach (var rule in rules) {
