@@ -16,6 +16,8 @@ namespace mymoneytracker
 
         private static string loadTransactionsQuery = "select * from Transactions";
         private static string loadRulesQuery = "select * from Rules";
+        private static string getStartingBalanceQuery = "select Setting_value from Configuration where Setting_name = 'starting_balance'";
+        private static string setStartingBalanceQuery = "replace into Configuration (Setting_name, Setting_value) values ('starting_balance', @sb)";
         private static string saveTransactionQuery = "insert into Transactions (Date, Payee, Amount, Custom_notes, Category) values (@Date, @Payee, @Amount, @Custom_notes, @Category)";
         private static string saveRuleQuery = "insert into Rules (Rule_name, Payee_regex, Direction, Category) values (@Rule_name, @Payee_regex, @Direction, @Category)";
         private static string deleteTransactionByIdQuery = "delete from Transactions where Id = @id";
@@ -36,6 +38,28 @@ namespace mymoneytracker
             {
                 var output = conn.Query<RuleModel>(loadRulesQuery, new DynamicParameters());
                 return output.ToList();
+            }
+        }
+
+        public static Decimal GetStartingBalance()
+        {
+            using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
+            {
+                var output = conn.Query<Decimal>(getStartingBalanceQuery, new DynamicParameters());
+
+                if (output.Count() <= 0 )
+                {
+                    return Decimal.MinValue;
+                }
+                return output.Single();
+            }
+        }
+
+        public static void SetStartingBalance(Decimal sb)
+        {
+            using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
+            {
+                conn.Execute(setStartingBalanceQuery, new { sb });
             }
         }
 
@@ -80,5 +104,6 @@ namespace mymoneytracker
             Console.WriteLine($"I loaded DB {dbPathAbs} from relative path {dbPathRel} from connection string {cs}");
             return cs;
         }
+
     }
 }

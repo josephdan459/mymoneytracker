@@ -17,8 +17,9 @@ namespace mymoneytracker
         public string Date { get; set; }
         public string Payee { get; set; }
         public decimal Amount { get; set; }
+        public decimal Balance { get; set; }
         public string Category { get; set; }
-        public string Custom_notes { get; set; }
+        public string Custom_notes { get; set; }   
         public void DefaultAll()
         {
             Date = DateTime.Today.ToString();

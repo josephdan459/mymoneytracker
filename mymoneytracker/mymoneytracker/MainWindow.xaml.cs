@@ -74,5 +74,20 @@ namespace mymoneytracker
             tbRuleMatchRegex.Text = "";
         }
 
+        private void TransactionTab_LostFocus(object sender, RoutedEventArgs e)
+        {
+            tbAmount.Text = "0";
+            tbPayee.Text = "Payee";
+            tbCategory.Text = "Category";
+            tbNotes.Text = "Notes";
+        }
+
+        private void RuleTab_LostFocus(object sender, RoutedEventArgs e)
+        {
+            tbRuleName.Text = "Rule Name";
+            tbRuleMatchRegex.Text = "Match Text";
+            tbRuleCategory.Text = "Category";
+        }
+
     }
 }

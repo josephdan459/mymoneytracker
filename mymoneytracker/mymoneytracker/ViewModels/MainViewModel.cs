@@ -18,15 +18,24 @@ namespace mymoneytracker.ViewModels
             Saved = new ObservableCollection<TransactionModel>();
             Rules = new ObservableCollection<RuleModel>();
 
-            foreach (var row in SqliteDataAccess.LoadTransactions())
+            var StartingBalance = SqliteDataAccess.GetStartingBalance();
+            if (StartingBalance == Decimal.MinValue)
             {
-                Saved.Add(row);
+                StartingBalanceDialog dialog = new StartingBalanceDialog();
+                if (dialog.ShowDialog() == true && dialog.DialogResult == true)
+                {
+                    // todo: simple validation
+                    SqliteDataAccess.SetStartingBalance(Convert.ToDecimal(dialog.ResponseText));
+                } else
+                {
+                    ErrorMessage = "Must input starting balance!";
+                    System.Windows.Application.Current.Shutdown();
+                    return;
+                }
+
             }
 
-            foreach (var row in SqliteDataAccess.LoadRules())
-            {
-                Rules.Add(row);
-            }
+            RefreshData();
         }
         #region Fields
         public event PropertyChangedEventHandler PropertyChanged;
@@ -42,6 +51,8 @@ namespace mymoneytracker.ViewModels
         public RuleModel NewRule { get; set; }
 
         public RuleModel SelectedRule { get; set; }
+
+        public Decimal CurrentBalance { get; set; }
 
         public ObservableCollection<TransactionModel> Saved { get; set; }
 
@@ -78,7 +89,6 @@ namespace mymoneytracker.ViewModels
 
         public void AddRule()
         {
-            //todo : Move to ViewModel
             try
             {                
                 SqliteDataAccess.SaveRule(NewRule);
@@ -119,8 +129,8 @@ namespace mymoneytracker.ViewModels
                 Rules.Add(row);
             }
 
-            // apply current rules to current transactions
-            Categorize.ApplyCategories(Saved, Rules);
+            // apply current rules to current transactions and calculate account balance
+            CurrentBalance = Categorize.ApplyCategoriesAndBalances(Saved, Rules, SqliteDataAccess.GetStartingBalance());
         }
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
