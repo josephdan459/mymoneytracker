@@ -16,12 +16,12 @@
                             SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" Canvas.Left="10" Canvas.Top="162">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*" Visibility="Hidden" />
-                            <DataGridTextColumn Header="Date"  Binding="{Binding Date}" Width="*" />
-                            <DataGridTextColumn Header="Balance" Binding="{Binding Balance, StringFormat=C2}" Width="*" />
-                            <DataGridTextColumn Header="Amount" Binding="{Binding Amount, StringFormat=C2}" Width="*" />
+                            <DataGridTextColumn Header="Date"  Binding="{Binding Date}" Width="*" />                            
+                            <DataGridTextColumn Header="Amount" Binding="{Binding Amount, StringFormat=$###0.00}" Width="*" />
                             <DataGridTextColumn Header="Payee" Binding="{Binding Payee}" Width="*" />
                             <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*" />
                             <DataGridTextColumn Header="Notes" Binding="{Binding Custom_notes}" Width="*" />
+                            <DataGridTextColumn Header="Account Balance" Binding="{Binding Balance, StringFormat=$###0.00}" Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>
                     <DatePicker x:Name="dpDate" Canvas.Left="10" Canvas.Top="50" Width="120" SelectedDate="{Binding NewTransaction.Date, Mode=TwoWay}"/>
@@ -33,7 +33,7 @@
                     <Button x:Name="btnAddTransaction" Content="Add Transaction" Canvas.Left="10" Canvas.Top="127" Width="120" Click="BtnAddTransaction_Click"/>
                     <Button Content="Delete Transaction" Click="DeleteTransactionButtonClick" Canvas.Left="169" Canvas.Top="127" Width="120"/>
                     <Label Content="Current Balance:" Canvas.Left="749" Canvas.Top="18" Height="27" Width="103"/>
-                    <Label Name="BalanceLabel" Content="{Binding Path=CurrentBalance, StringFormat=C2}" Canvas.Left="749" Canvas.Top="33" Height="27" Width="103"/>
+                    <Label Name="BalanceLabel" Content="{Binding Path=CurrentBalance, StringFormat=$###0.00}" Canvas.Left="749" Canvas.Top="33" Height="27" Width="103"/>
                 </Canvas>
             </TabItem>
             <TabItem Header="Rules" Selector.Unselected="RuleTab_LostFocus" >

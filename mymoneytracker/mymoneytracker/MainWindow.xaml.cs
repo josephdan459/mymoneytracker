@@ -30,10 +30,14 @@ namespace mymoneytracker
         private void BtnAddTransaction_Click(object sender, RoutedEventArgs e)
         {
             viewModel.AddTrans();
+            // refresh current balance label
+            BalanceLabel.GetBindingExpression(Label.ContentProperty).UpdateTarget();
         }
         private void DeleteTransactionButtonClick(object sender, RoutedEventArgs e)
-        {
+        {            
             viewModel.RemoveTrans();
+            // refresh current balance label
+            BalanceLabel.GetBindingExpression(Label.ContentProperty).UpdateTarget();
         }
 
         private void BtnAddRule_Click(object sender, RoutedEventArgs e)

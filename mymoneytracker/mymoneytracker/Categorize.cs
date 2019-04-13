@@ -27,7 +27,7 @@ namespace mymoneytracker
                 }
             }
 
-            return balance;
+            return Math.Round(balance, 2);
         }
 
         private static void CategorizeTransaction(TransactionModel transaction, ObservableCollection<RuleModel> rules)

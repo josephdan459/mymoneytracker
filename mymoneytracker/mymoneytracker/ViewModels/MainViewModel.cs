@@ -52,7 +52,7 @@ namespace mymoneytracker.ViewModels
 
         public RuleModel SelectedRule { get; set; }
 
-        public Decimal CurrentBalance { get; set; }
+        public String CurrentBalance { get; set; }
 
         public ObservableCollection<TransactionModel> Saved { get; set; }
 
@@ -130,7 +130,13 @@ namespace mymoneytracker.ViewModels
             }
 
             // apply current rules to current transactions and calculate account balance
-            CurrentBalance = Categorize.ApplyCategoriesAndBalances(Saved, Rules, SqliteDataAccess.GetStartingBalance());
+            var cb = Categorize.ApplyCategoriesAndBalances(Saved, Rules, SqliteDataAccess.GetStartingBalance());            
+            if (cb < 0) {
+                CurrentBalance = "-$" + cb.ToString();
+            } else
+            {
+                CurrentBalance = "$" + cb.ToString();
+            }
         }
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
