@@ -29,7 +29,7 @@ namespace mymoneytracker
       
         private void BtnAddTransaction_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.AddTrans();
+            viewModel.AddTrans(cbDirectionTransaction.Text);
             // refresh current balance label
             BalanceLabel.GetBindingExpression(Label.ContentProperty).UpdateTarget();
         }

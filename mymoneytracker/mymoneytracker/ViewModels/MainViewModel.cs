@@ -60,12 +60,20 @@ namespace mymoneytracker.ViewModels
         #endregion
 
         #region Methods
-        public void AddTrans()
+        public void AddTrans(string TransactionDirection)
         {
             try
             {
-                // todo : handle empty/default values
+                if (TransactionDirection.Contains("Outflow"))
+                {
+                    NewTransaction.Amount = -Math.Abs(NewTransaction.Amount);
+                } else
+                {
+                    NewTransaction.Amount = Math.Abs(NewTransaction.Amount);
+                }
+
                 SqliteDataAccess.SaveTransaction(NewTransaction);                
+
                 RefreshData();
             }
             catch (Exception ex)
@@ -90,7 +98,11 @@ namespace mymoneytracker.ViewModels
         public void AddRule()
         {
             try
-            {                
+            {               
+                if (NewRule.Direction == null)
+                {
+                    throw new ArgumentException("Must select rule direction");
+                }
                 SqliteDataAccess.SaveRule(NewRule);
                 RefreshData();                
             }
