@@ -93,5 +93,19 @@ namespace mymoneytracker
             tbRuleCategory.Text = "Category";
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.SaveFileDialog();
+            dialog.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+            dialog.Title = "Save report to...";
+            dialog.DefaultExt = ".xls";
+            dialog.Filter = "xls|*.xls";
+
+            if (dialog.ShowDialog() == true)
+            {
+                string reportPath = dialog.FileName;
+                Reports.CreateBasicReport(reportPath);
+            }
+        }
     }
 }

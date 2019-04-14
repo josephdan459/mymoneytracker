@@ -7,7 +7,11 @@
         mc:Ignorable="d"
         Title="My Money Tracker" Height="690" Width="911">
     <Grid>
-        <TabControl>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="55*"/>
+            <ColumnDefinition Width="74*"/>
+        </Grid.ColumnDefinitions>
+        <TabControl Grid.ColumnSpan="2">
             <TabItem Header="Transactions" Selector.Unselected="TransactionTab_LostFocus">
                 <Canvas>
                     <Label Content="Here you can view all recent transactions and add new ones" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
@@ -66,6 +70,7 @@
             <TabItem Header="Reports">
                 <Canvas>
                     <Label Content="Here you can run reports" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
+                    <Button Content="Save Basic Report..." Width="141" Canvas.Left="45" Canvas.Top="85" Height="29" Click="Button_Click"/>
                 </Canvas>
             </TabItem>
             <TabItem Header="Options">
