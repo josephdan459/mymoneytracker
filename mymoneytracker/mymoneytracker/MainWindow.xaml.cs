@@ -141,7 +141,7 @@ namespace mymoneytracker
                             editedTransaction.Custom_notes = el.Text;
                             break;
                         default:
-                            // not allowed to change date or amount or balance, return now
+                            // not allowed to change amount or balance, return now
                             return;
                     }
                     // save edited transaction to DB and refresh UI
