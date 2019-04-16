@@ -125,6 +125,12 @@ namespace mymoneytracker.ViewModels
             }
         }
 
+        public void UpdateTransaction(TransactionModel editedTransaction)
+        {            
+            //SqliteDataAccess.UpdateTransaction(editedTransaction);
+            RefreshData();
+        }
+
         public void RefreshData()
         {
             Saved.Clear();

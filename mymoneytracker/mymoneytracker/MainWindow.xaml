@@ -17,15 +17,15 @@
                     <Label Content="Here you can view all recent transactions and add new ones" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
 
                     <DataGrid x:Name="Recent_Transactions" HorizontalAlignment="Left" Height="443" VerticalAlignment="Top" Width="872" ItemsSource="{Binding Saved}"
-                            SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" Canvas.Left="10" Canvas.Top="162">
+                            SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="False" Canvas.Left="10" Canvas.Top="162">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*" Visibility="Hidden" />
-                            <DataGridTextColumn Header="Date"  Binding="{Binding Date}" Width="*" />
+                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*" Visibility="Hidden" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Date"  Binding="{Binding Date}" Width="*" SortDirection="Ascending" />
                             <DataGridTextColumn Header="Amount" Binding="{Binding Amount, StringFormat=$###0.00}" Width="*" />
                             <DataGridTextColumn Header="Payee" Binding="{Binding Payee}" Width="*" />
                             <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*" />
                             <DataGridTextColumn Header="Notes" Binding="{Binding Custom_notes}" Width="*" />
-                            <DataGridTextColumn Header="Account Balance" Binding="{Binding Balance, StringFormat=$###0.00}" Width="*" />
+                            <DataGridTextColumn Header="Account Balance" Binding="{Binding Balance, StringFormat=$###0.00}" Width="*" IsReadOnly="True" />
                         </DataGrid.Columns>
                     </DataGrid>
                     <DatePicker x:Name="dpDate" Canvas.Left="10" Canvas.Top="50" Width="120" SelectedDate="{Binding NewTransaction.Date, Mode=TwoWay}"/>

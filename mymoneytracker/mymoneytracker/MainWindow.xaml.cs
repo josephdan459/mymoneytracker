@@ -23,6 +23,8 @@ namespace mymoneytracker
         {
             InitializeComponent();
 
+            Recent_Transactions.CellEditEnding += Transactions_CellEditEnding;
+
             viewModel = new ViewModels.MainViewModel();
             this.DataContext = viewModel;           
         }
@@ -105,6 +107,47 @@ namespace mymoneytracker
             {
                 string reportPath = dialog.FileName;
                 Reports.CreateBasicReport(reportPath);
+            }
+        }
+
+        private void Transactions_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                // Need to get the new user-edited value with a switch statement
+                var c = e.Column as DataGridBoundColumn;
+                if (c != null)
+                {
+                    TransactionModel editedTransaction = (TransactionModel)e.Row.DataContext;
+                    int rowIndex = e.Row.GetIndex();
+                    var el = e.EditingElement as TextBox;
+                    var changedColumn = (c.Binding as Binding).Path.Path;
+                    switch (changedColumn)
+                    {
+                        case "Date":
+                            // todo: verify valid date?
+                            editedTransaction.Date = el.Text;
+                            break;
+                        case "Amount":
+                            editedTransaction.Amount = Convert.ToDecimal(el.Text.Replace("$", ""));
+                            break;
+                        case "Payee":
+                            editedTransaction.Payee = el.Text;
+                            break;
+                        case "Category":
+                            editedTransaction.Category = el.Text;
+                            break;
+                        case "Custom_notes":
+                            editedTransaction.Custom_notes = el.Text;
+                            break;
+                        default:
+                            // not allowed to change date or amount or balance, return now
+                            return;
+                    }
+                    // save edited transaction to DB and refresh UI
+                    viewModel.UpdateTransaction(editedTransaction);
+                }                
+                
             }
         }
     }
