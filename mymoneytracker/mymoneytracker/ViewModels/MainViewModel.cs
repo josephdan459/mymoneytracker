@@ -126,9 +126,16 @@ namespace mymoneytracker.ViewModels
         }
 
         public void UpdateTransaction(TransactionModel editedTransaction)
-        {            
-            //SqliteDataAccess.UpdateTransaction(editedTransaction);
-            RefreshData();
+        {
+            try
+            {
+                SqliteDataAccess.UpdateTransaction(editedTransaction);
+                RefreshData();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = "An error occured: " + ex.Message + "\n\nStack trace: " + ex.StackTrace + "Error!";
+            }
         }
 
         public void RefreshData()

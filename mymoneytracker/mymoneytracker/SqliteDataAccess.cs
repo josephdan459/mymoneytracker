@@ -19,9 +19,11 @@ namespace mymoneytracker
         private static string getStartingBalanceQuery = "select Setting_value from Configuration where Setting_name = 'starting_balance'";
         private static string setStartingBalanceQuery = "replace into Configuration (Setting_name, Setting_value) values ('starting_balance', @sb)";
         private static string saveTransactionQuery = "insert into Transactions (Date, Payee, Amount, Custom_notes, Category) values (@Date, @Payee, @Amount, @Custom_notes, @Category)";
+        private static string updateTransactionQuery = "update Transactions set Date = @Date, Payee = @Payee, Amount = @Amount, Custom_notes = @Custom_notes, Category = @Category where Id = @id";
         private static string saveRuleQuery = "insert into Rules (Rule_name, Payee_regex, Direction, Category) values (@Rule_name, @Payee_regex, @Direction, @Category)";
         private static string deleteTransactionByIdQuery = "delete from Transactions where Id = @id";
         private static string deleteRuleByNameQuery = "delete from Rules where Rule_name = @name";
+
 
         public static List<TransactionModel> LoadTransactions()
         {
@@ -69,6 +71,14 @@ namespace mymoneytracker
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
             {
                 conn.Execute(saveTransactionQuery, transaction);
+            }
+        }
+
+        public static void UpdateTransaction(TransactionModel transaction)
+        {
+            using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
+            {
+                conn.Execute(updateTransactionQuery, transaction);
             }
         }
 

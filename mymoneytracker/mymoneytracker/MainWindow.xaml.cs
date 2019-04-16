@@ -126,7 +126,7 @@ namespace mymoneytracker
                     {
                         case "Date":
                             // todo: verify valid date?
-                            editedTransaction.Date = el.Text;
+                            editedTransaction.Date = Convert.ToDateTime(el.Text);
                             break;
                         case "Amount":
                             editedTransaction.Amount = Convert.ToDecimal(el.Text.Replace("$", ""));
@@ -146,6 +146,7 @@ namespace mymoneytracker
                     }
                     // save edited transaction to DB and refresh UI
                     viewModel.UpdateTransaction(editedTransaction);
+                    BalanceLabel.GetBindingExpression(Label.ContentProperty).UpdateTarget();
                 }                
                 
             }
