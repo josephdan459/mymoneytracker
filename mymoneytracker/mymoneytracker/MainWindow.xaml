@@ -75,7 +75,8 @@
             </TabItem>
             <TabItem Header="Import">
                 <Canvas>
-                    <Label Content="Here you can import a list of transactions from a .csv file" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
+                    <Label Content="Here you can import a list of transactions from a .csv file." HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
+                    <Label Content="NOTE: The first line of the file must be actual data, not column names." HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="271"/>
                     <Label Content="Specify the format of your .csv file. Select the column number for each:" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="11" Canvas.Top="63"/>
                     <Label Content="Date" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="19" Canvas.Top="91"/>
                     <ComboBox x:Name="ImportCsvDateCol" Width="43" Canvas.Left="24" Canvas.Top="117" Height="24">

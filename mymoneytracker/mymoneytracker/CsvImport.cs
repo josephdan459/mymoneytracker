@@ -60,7 +60,7 @@ namespace mymoneytracker
                     catch
                     {
                         ci.it = null;
-                        ci.status = $"Invalid date {row[dateCol]} on line {line}";
+                        ci.status = $"Invalid date ({row[dateCol]}) on line {line}";
                         return ci;
                     }
                 }
@@ -90,7 +90,7 @@ namespace mymoneytracker
                 catch
                 {
                     ci.it = null;
-                    ci.status = $"Invalid amount {row[amountCol]} on line {line}";
+                    ci.status = $"Invalid amount ({row[amountCol]}) on line {line}";
                     return ci;
                 }
 
