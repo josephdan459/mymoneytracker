@@ -14,23 +14,26 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace mymoneytracker
-{    
+{
     public partial class MainWindow : Window
     {
         private static ViewModels.MainViewModel viewModel;
         private bool importing;
 
+        private List<TransactionModel> imported;
+
         public MainWindow()
         {
-            InitializeComponent();            
+            InitializeComponent();
 
             Recent_Transactions.CellEditEnding += Transactions_CellEditEnding;
 
             viewModel = new ViewModels.MainViewModel();
             this.DataContext = viewModel;
             this.importing = false;
+            this.imported = null;
         }
-      
+
         private void BtnAddTransaction_Click(object sender, RoutedEventArgs e)
         {
             viewModel.AddTrans(cbDirectionTransaction.Text);
@@ -38,7 +41,7 @@ namespace mymoneytracker
             BalanceLabel.GetBindingExpression(Label.ContentProperty).UpdateTarget();
         }
         private void DeleteTransactionButtonClick(object sender, RoutedEventArgs e)
-        {            
+        {
             viewModel.RemoveTrans();
             // refresh current balance label
             BalanceLabel.GetBindingExpression(Label.ContentProperty).UpdateTarget();
@@ -113,7 +116,7 @@ namespace mymoneytracker
         }
 
 
-        private void ImportCsvBtnClick(object sender , RoutedEventArgs e)
+        private void ImportCsvBtnClick(object sender, RoutedEventArgs e)
         {
             if (this.importing)
             {
@@ -137,7 +140,7 @@ namespace mymoneytracker
                 {
                     i = (ComboBoxItem)ImportCsvDateCol.SelectedItem;
                     dateCol = Convert.ToInt32(i.Content.ToString()) - 1;
-                }                
+                }
 
                 i = (ComboBoxItem)ImportCsvAmountCol.SelectedItem;
                 amountCol = Convert.ToInt32(i.Content.ToString()) - 1;
@@ -152,16 +155,16 @@ namespace mymoneytracker
                 {
                     CsvImportStatus.Content = "Select all columns first";
                     return;
-                }                
+                }
             }
-            catch 
+            catch
             {
                 CsvImportStatus.Content = "Select all columns first";
                 return;
             }
 
             // open filepicker to csv file
-                var dialog = new Microsoft.Win32.OpenFileDialog();
+            var dialog = new Microsoft.Win32.OpenFileDialog();
             dialog.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
             dialog.Title = "Import transactions from...";
             dialog.DefaultExt = ".csv";
@@ -177,7 +180,7 @@ namespace mymoneytracker
                 if (directionCol == "Inflow")
                 {
                     db = CsvImport.DirectionBehavior.Inflow;
-                } else if(directionCol == "Outflow")
+                } else if (directionCol == "Outflow")
                 {
                     db = CsvImport.DirectionBehavior.Outflow;
                 } else
@@ -196,9 +199,49 @@ namespace mymoneytracker
             if (results.status == CsvImport.successStatus)
             {
                 // show preview of first transaction
-
+                CsvDatePreview.Content = "Date: " + results.it.First().Date.ToString();
+                CsvAmountPreview.Content = "Amount: " + results.it.First().Amount.ToString();
+                CsvPayeePreview.Content = "Payee: " + results.it.First().Payee.ToString();
+                CsvNumberPreview.Content = $"and {results.it.Count - 1} more...";
                 this.importing = true;
-            }            
+                this.imported = results.it;
+            }
+        }
+
+        private void CancelImportClick(object sender, RoutedEventArgs e)
+        {
+            CsvImportStatus.Content = "Status:";
+            CsvDatePreview.Content = "";
+            CsvAmountPreview.Content = "";
+            CsvPayeePreview.Content = "";
+            CsvNumberPreview.Content = "";
+            this.imported = null;
+            this.importing = false;
+        }
+
+        private void ConfirmImportClick(object sender, RoutedEventArgs e)
+        {
+
+            if (!this.importing)
+            {
+                return;
+            }
+
+            CsvImportStatus.Content = $"Status: Processing {this.imported.Count} new transactions...";
+
+            foreach (TransactionModel t in this.imported) {
+                SqliteDataAccess.SaveTransaction(t);
+            }
+            viewModel.RefreshData();
+            BalanceLabel.GetBindingExpression(Label.ContentProperty).UpdateTarget();
+
+            CsvDatePreview.Content = "";
+            CsvAmountPreview.Content = "";
+            CsvPayeePreview.Content = "";
+            CsvNumberPreview.Content = "";
+            CsvImportStatus.Content = $"Status: {this.imported.Count} transactions added";
+            this.imported = null;
+            this.importing = false;           
         }
 
         // Updates DB when when transaction cells are edited by user

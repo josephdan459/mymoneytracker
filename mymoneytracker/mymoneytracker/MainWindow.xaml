@@ -124,18 +124,20 @@
                         <ComboBoxItem>12</ComboBoxItem>
                     </ComboBox>
                     <Button x:Name="ImportCSVBtn" Click="ImportCsvBtnClick" Content="Import csv file..." Width="89" Canvas.Left="17" Canvas.Top="240" Height="30"/>
-                    <Label Content="Add preview of one of the transactions here" Canvas.Left="19" Canvas.Top="396"/>
-                    <Button Content="Confirm Import" Width="89" Canvas.Left="25" Canvas.Top="443" Height="30"/>
+                    <Button Content="Confirm Import" Click="ConfirmImportClick" Width="89" Canvas.Left="24" Canvas.Top="532" Height="30"/>
                     <Label Content="Select file to import:" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="11" Canvas.Top="208"/>
-                    <Button Content="Canacel Import" Width="89" Canvas.Left="128" Canvas.Top="443" Height="30"/>
-                    <Border BorderBrush="Black" BorderThickness="1" Height="40" Canvas.Left="19" Canvas.Top="382" Width="524"/>
+                    <Button Content="Cancel Import" Click="CancelImportClick" Width="89" Canvas.Left="126" Canvas.Top="532" Height="30"/>
                     <Label Content="Direction" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="315" Canvas.Top="91"/>
                     <ComboBox x:Name="ImportCsvDirection" Width="105" Canvas.Left="319" Canvas.Top="117" Height="24">
                         <ComboBoxItem Content="Inflow"/>
                         <ComboBoxItem Content="Outflow"/>
-                        <ComboBoxItem Content="Both"/>                        
+                        <ComboBoxItem Content="Both"/>
                     </ComboBox>
                     <Label x:Name="CsvImportStatus" Content="Status:" Canvas.Left="19" Canvas.Top="351" Width="524"/>
+                    <Label x:Name="CsvDatePreview" Content="" Canvas.Left="19" Canvas.Top="391" Width="394" Height="28"/>
+                    <Label x:Name="CsvAmountPreview" Content="" Canvas.Left="19" Canvas.Top="421" Width="394" Height="28"/>
+                    <Label x:Name="CsvPayeePreview" Content="" Canvas.Left="19" Canvas.Top="451" Width="394" Height="28"/>
+                    <Label x:Name="CsvNumberPreview" Content="" Canvas.Left="19" Canvas.Top="481" Width="394" Height="28"/>
                 </Canvas>
             </TabItem>
 

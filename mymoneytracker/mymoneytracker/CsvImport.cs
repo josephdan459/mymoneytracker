@@ -10,7 +10,7 @@ namespace mymoneytracker
     {
         public List<TransactionModel> it;
         public string status;
-        public const string successStatus = "Transactions imported successfully";
+        public const string successStatus = "Transactions loaded successfully. Confirm preview below to save:";
         public enum DirectionBehavior
         {
             Inflow,
@@ -44,7 +44,10 @@ namespace mymoneytracker
                 }
 
                 // set date
-                TransactionModel t = new TransactionModel();                
+                TransactionModel t = new TransactionModel();
+                t.Payee = "";
+                t.Category = "";
+                t.Custom_notes = "";
                 if (currentDate != null)
                 {
                     t.Date = (DateTime)currentDate;
@@ -79,6 +82,9 @@ namespace mymoneytracker
                         case DirectionBehavior.Both:
                             t.Amount = Convert.ToDecimal(row[amountCol].Replace("$", ""));
                             break;
+                    }
+                    if (t.Amount == 0) {
+                        continue;
                     }
                 }
                 catch
