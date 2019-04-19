@@ -17,16 +17,18 @@ namespace mymoneytracker
 {    
     public partial class MainWindow : Window
     {
-        private static ViewModels.MainViewModel viewModel;        
+        private static ViewModels.MainViewModel viewModel;
+        private bool importing;
 
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();            
 
             Recent_Transactions.CellEditEnding += Transactions_CellEditEnding;
 
             viewModel = new ViewModels.MainViewModel();
-            this.DataContext = viewModel;           
+            this.DataContext = viewModel;
+            this.importing = false;
         }
       
         private void BtnAddTransaction_Click(object sender, RoutedEventArgs e)
@@ -110,6 +112,96 @@ namespace mymoneytracker
             }
         }
 
+
+        private void ImportCsvBtnClick(object sender , RoutedEventArgs e)
+        {
+            if (this.importing)
+            {
+                return;
+            }
+
+            // make sure each column is selected
+            int dateCol = -1;
+            int amountCol;
+            int payeeCol;
+            string directionCol;
+            DateTime? currentDate = null;
+            try
+            {
+                ComboBoxItem i;
+
+                if (ImportCsvDateToday.IsChecked.Value == true)
+                {
+                    currentDate = System.DateTime.Now;
+                } else
+                {
+                    i = (ComboBoxItem)ImportCsvDateCol.SelectedItem;
+                    dateCol = Convert.ToInt32(i.Content.ToString()) - 1;
+                }                
+
+                i = (ComboBoxItem)ImportCsvAmountCol.SelectedItem;
+                amountCol = Convert.ToInt32(i.Content.ToString()) - 1;
+
+                i = (ComboBoxItem)ImportCsvPayeeCol.SelectedItem;
+                payeeCol = Convert.ToInt32(i.Content.ToString()) - 1;
+
+                i = (ComboBoxItem)ImportCsvDirection.SelectedItem;
+                directionCol = i.Content.ToString();
+
+                if ((ImportCsvDateToday.IsChecked.Value == false && dateCol == -1))
+                {
+                    CsvImportStatus.Content = "Select all columns first";
+                    return;
+                }                
+            }
+            catch 
+            {
+                CsvImportStatus.Content = "Select all columns first";
+                return;
+            }
+
+            // open filepicker to csv file
+                var dialog = new Microsoft.Win32.OpenFileDialog();
+            dialog.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+            dialog.Title = "Import transactions from...";
+            dialog.DefaultExt = ".csv";
+            dialog.Filter = "csv|*.csv";
+
+            CsvImport results;
+            results = new CsvImport();
+            if (dialog.ShowDialog() == true)
+            {
+                string csvPath = dialog.FileName;
+
+                CsvImport.DirectionBehavior db;
+                if (directionCol == "Inflow")
+                {
+                    db = CsvImport.DirectionBehavior.Inflow;
+                } else if(directionCol == "Outflow")
+                {
+                    db = CsvImport.DirectionBehavior.Outflow;
+                } else
+                {
+                    db = CsvImport.DirectionBehavior.Both;
+                }
+
+                results = CsvImport.TransactionsFromCsv(csvPath, currentDate, dateCol, amountCol, payeeCol, db);
+            } else
+            {
+                CsvImportStatus.Content = "Invalid import selection";
+                return;
+            }
+
+            CsvImportStatus.Content = results.status;
+            if (results.status == CsvImport.successStatus)
+            {
+                // show preview of first transaction
+
+                this.importing = true;
+            }            
+        }
+
+        // Updates DB when when transaction cells are edited by user
         private void Transactions_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             if (e.EditAction == DataGridEditAction.Commit)
