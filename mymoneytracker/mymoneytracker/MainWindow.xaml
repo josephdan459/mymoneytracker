@@ -17,7 +17,7 @@
                     <Label Content="Here you can view all recent transactions and add new ones" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
 
                     <DataGrid x:Name="Recent_Transactions" HorizontalAlignment="Left" Height="443" VerticalAlignment="Top" Width="872" ItemsSource="{Binding Saved}"
-                            SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="False" Canvas.Left="10" Canvas.Top="162">
+                            SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="False" Canvas.Left="10" Canvas.Top="162" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*" Visibility="Hidden" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Date"  Binding="{Binding Date}" Width="*" SortDirection="Ascending" />
@@ -48,8 +48,8 @@
                 <Canvas>
                     <Label Content="Here you can view all classification rules and add new ones" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
                     <Button Content="Delete Rule" Click="DeleteRuleButtonClick" Canvas.Left="169" Canvas.Top="127" Width="120"/>
-                    <DataGrid x:Name="Rules_List" HorizontalAlignment="Left" Height="443" VerticalAlignment="Top" Width="872" ItemsSource="{Binding Rules}"
-                        SelectedItem="{Binding SelectedRule, Mode=TwoWay}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" Canvas.Left="10" Canvas.Top="162">
+                    <DataGrid x:Name="Rules_List" CellEditEnding="Rules_CellEditEnding" HorizontalAlignment="Left" Height="443" VerticalAlignment="Top" Width="872" ItemsSource="{Binding Rules}"
+                        SelectedItem="{Binding SelectedRule, Mode=TwoWay}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="False" Canvas.Left="10" Canvas.Top="162">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Rule Name" Binding="{Binding Rule_name}" Width="*" />
                             <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*" />

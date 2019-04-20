@@ -14,13 +14,14 @@ namespace mymoneytracker
     public class SqliteDataAccess
     {
 
-        private static string loadTransactionsQuery = "select * from Transactions";
+        private static string loadTransactionsQuery = "select * from Transactions order by Date desc";
         private static string loadRulesQuery = "select * from Rules";
         private static string getStartingBalanceQuery = "select Setting_value from Configuration where Setting_name = 'starting_balance'";
         private static string setStartingBalanceQuery = "replace into Configuration (Setting_name, Setting_value) values ('starting_balance', @sb)";
         private static string saveTransactionQuery = "insert into Transactions (Date, Payee, Amount, Custom_notes, Category) values (@Date, @Payee, @Amount, @Custom_notes, @Category)";
         private static string updateTransactionQuery = "update Transactions set Date = @Date, Payee = @Payee, Amount = @Amount, Custom_notes = @Custom_notes, Category = @Category where Id = @id";
         private static string saveRuleQuery = "insert into Rules (Rule_name, Payee_regex, Direction, Category) values (@Rule_name, @Payee_regex, @Direction, @Category)";
+        private static string updateRuleQuery = "update Rules set Rule_name = @Rule_name, Payee_regex = @Payee_regex, Direction = @Direction, Category = @Category where Id = @id";
         private static string deleteTransactionByIdQuery = "delete from Transactions where Id = @id";
         private static string deleteRuleByNameQuery = "delete from Rules where Rule_name = @name";
 
@@ -87,6 +88,14 @@ namespace mymoneytracker
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
             {
                 conn.Execute(saveRuleQuery, rule);
+            }
+        }
+
+        public static void UpdateRule(RuleModel rule)
+        {
+            using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
+            {
+                conn.Execute(updateRuleQuery, rule);
             }
         }
 

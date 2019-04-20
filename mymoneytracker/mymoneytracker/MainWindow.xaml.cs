@@ -151,5 +151,44 @@ namespace mymoneytracker
                 
             }
         }
+
+        private void Rules_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                // Need to get the new user-edited value with a switch statement
+                var c = e.Column as DataGridBoundColumn;
+                if (c != null)
+                {
+                    RuleModel editedRule = (RuleModel)e.Row.DataContext;
+                    int rowIndex = e.Row.GetIndex();
+                    var el = e.EditingElement as TextBox;
+                    var changedColumn = (c.Binding as Binding).Path.Path;
+                    switch (changedColumn)
+                    {
+                        case "Rule_name":
+                            // todo: verify valid date?
+                            editedRule.Rule_name = el.Text;
+                            break;
+                        case "Category":
+                            editedRule.Category = el.Text;
+                            break;
+                        case "Payee_regex":
+                            editedRule.Payee_regex = el.Text;
+                            break;
+                        case "Direction":
+                            editedRule.Direction = el.Text;
+                            break;
+                        default:
+                            // not allowed to change balance, return now
+                            return;
+                    }
+                    // save edited transaction to DB and refresh UI
+                    viewModel.UpdateRule(editedRule);
+                    //BalanceLabel.GetBindingExpression(Label.ContentProperty).UpdateTarget();
+                }
+
+            }
+        }
     }
 }

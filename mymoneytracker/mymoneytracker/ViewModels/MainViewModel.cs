@@ -138,6 +138,19 @@ namespace mymoneytracker.ViewModels
             }
         }
 
+        public void UpdateRule(RuleModel editedRule)
+        {
+            try
+            {
+                SqliteDataAccess.UpdateRule(editedRule);
+                RefreshData();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = "An error occured: " + ex.Message + "\n\nStack trace: " + ex.StackTrace + "Error!";
+            }
+        }
+
         public void RefreshData()
         {
             Saved.Clear();
