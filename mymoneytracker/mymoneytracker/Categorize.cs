@@ -14,7 +14,7 @@ namespace mymoneytracker
         public static Decimal ApplyCategoriesAndBalances(ObservableCollection<TransactionModel> transactions, ObservableCollection<RuleModel> rules, Decimal balance)
         {
             // Iterate through each transaction and add categories for any that are not manually set
-            foreach (var transaction in transactions)
+            foreach (var transaction in transactions.Reverse())
             {
                 // show account balance at time of transaction
                 balance += transaction.Amount;
