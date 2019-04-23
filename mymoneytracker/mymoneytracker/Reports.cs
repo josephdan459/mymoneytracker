@@ -11,7 +11,7 @@ namespace mymoneytracker
 {
     class Reports
     {
-        public static void CreateBasicReport(string reportPath, IEnumerable<TransactionModel> transactions, int reportDays)
+        public static void CreateBasicReport(string reportPath, IEnumerable<TransactionModel> transactions, int reportDays, bool ShowCategorySummaries, bool ShowBalanceGraph, bool ShowMostExpensivePurchases, bool ReportInflowGraph, bool ReportOutflowGraph)
         {
             var fp = new FileInfo(reportPath);
 

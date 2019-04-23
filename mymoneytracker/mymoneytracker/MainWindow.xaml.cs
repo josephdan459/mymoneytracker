@@ -100,12 +100,15 @@ namespace mymoneytracker
             tbRuleCategory.Text = "Category";
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ReportButton_Click(object sender, RoutedEventArgs e)
         {
             int reportDays;
             try
             {
                 reportDays = Convert.ToInt32(reportWindow.Text);
+                if (reportDays < 2) {
+                    throw new Exception("");
+                }
             }
             catch
             {
@@ -123,7 +126,7 @@ namespace mymoneytracker
             if (dialog.ShowDialog() == true)
             {
                 string reportPath = dialog.FileName;
-                Reports.CreateBasicReport(reportPath, viewModel.Saved, reportDays);
+                Reports.CreateBasicReport(reportPath, viewModel.Saved, reportDays, ShowCategorySummaries.IsChecked.Value, ShowBalanceGraph.IsChecked.Value, ShowMostExpensivePurchases.IsChecked.Value, ReportInflowGraph.IsChecked.Value, ReportOutflowGraph.IsChecked.Value);
             }
         }
 
