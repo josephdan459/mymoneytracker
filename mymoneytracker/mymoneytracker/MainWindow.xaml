@@ -72,8 +72,12 @@
                     <Label Content="Here you can run reports to track finance changes over time" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
                     <Label Content="Report window:" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="3" Canvas.Top="59"/>
                     <TextBox x:Name="reportWindow" Height="23" TextWrapping="Wrap" Text="30" Width="48" GotFocus="TbRuleName_GotFocus" Canvas.Top="62" Canvas.Left="96" />
-                    <Button Content="Save Basic Report..." Width="141" Canvas.Left="196" Canvas.Top="60" Height="29" Click="Button_Click"/>
+                    <Button Content="Save Basic Report..." Width="141" Canvas.Left="10" Canvas.Top="249" Height="29" Click="Button_Click"/>
                     <Label Content="days" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="146" Canvas.Top="59"/>
+                    <CheckBox x:Name="ReportInflowGraph" Content="Create inflow graph" Canvas.Top="168" Canvas.Left="11"/>
+                    <CheckBox x:Name="ReportOutflowGraph" Content="Create outflow graph" Canvas.Top="203" Canvas.Left="11"/>
+                    <CheckBox x:Name="ShowCategorySummaries" Content="Show category summaries" Canvas.Top="100" Canvas.Left="11"/>
+                    <CheckBox x:Name="ShowMostExpensivePurchases" Content="List most expensive purchases" Canvas.Top="130" Canvas.Left="11"/>
                 </Canvas>
             </TabItem>
             <TabItem Header="Import">
@@ -144,6 +148,7 @@
                     <Label x:Name="CsvNumberPreview" Content="" Canvas.Left="19" Canvas.Top="481" Width="394" Height="28"/>
                 </Canvas>
             </TabItem>
+            
 
 
         </TabControl>
