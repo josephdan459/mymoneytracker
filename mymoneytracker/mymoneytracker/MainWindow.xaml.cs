@@ -102,6 +102,18 @@ namespace mymoneytracker
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            int reportDays;
+            try
+            {
+                reportDays = Convert.ToInt32(reportWindow.Text);
+            }
+            catch
+            {
+                // invalid user input, reset to good value
+                reportWindow.Text = "30";
+                return;
+            }
+
             var dialog = new Microsoft.Win32.SaveFileDialog();
             dialog.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
             dialog.Title = "Save report to...";
@@ -111,7 +123,7 @@ namespace mymoneytracker
             if (dialog.ShowDialog() == true)
             {
                 string reportPath = dialog.FileName;
-                Reports.CreateBasicReport(reportPath);
+                Reports.CreateBasicReport(reportPath, viewModel.Saved, reportDays);
             }
         }
 
@@ -244,7 +256,7 @@ namespace mymoneytracker
             this.importing = false;           
         }
 
-        // Updates DB when when transaction cells are edited by user
+        // Updates DB when transaction cells are edited by user
         private void Transactions_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             if (e.EditAction == DataGridEditAction.Commit)
@@ -302,7 +314,6 @@ namespace mymoneytracker
                     switch (changedColumn)
                     {
                         case "Rule_name":
-                            // todo: verify valid date?
                             editedRule.Rule_name = el.Text;
                             break;
                         case "Category":
@@ -315,12 +326,10 @@ namespace mymoneytracker
                             editedRule.Direction = el.Text;
                             break;
                         default:
-                            // not allowed to change balance, return now
                             return;
                     }
                     // save edited transaction to DB and refresh UI
                     viewModel.UpdateRule(editedRule);
-                    //BalanceLabel.GetBindingExpression(Label.ContentProperty).UpdateTarget();
                 }
 
             }

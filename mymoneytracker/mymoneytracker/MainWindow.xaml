@@ -69,8 +69,11 @@
             </TabItem>
             <TabItem Header="Reports">
                 <Canvas>
-                    <Label Content="Here you can run reports" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
-                    <Button Content="Save Basic Report..." Width="141" Canvas.Left="45" Canvas.Top="85" Height="29" Click="Button_Click"/>
+                    <Label Content="Here you can run reports to track finance changes over time" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
+                    <Label Content="Report window:" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="3" Canvas.Top="59"/>
+                    <TextBox x:Name="reportWindow" Height="23" TextWrapping="Wrap" Text="30" Width="48" GotFocus="TbRuleName_GotFocus" Canvas.Top="62" Canvas.Left="96" />
+                    <Button Content="Save Basic Report..." Width="141" Canvas.Left="196" Canvas.Top="60" Height="29" Click="Button_Click"/>
+                    <Label Content="days" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="146" Canvas.Top="59"/>
                 </Canvas>
             </TabItem>
             <TabItem Header="Import">
