@@ -126,7 +126,9 @@ namespace mymoneytracker
             if (dialog.ShowDialog() == true)
             {
                 string reportPath = dialog.FileName;
-                Reports.CreateBasicReport(reportPath, viewModel.Saved, reportDays, ShowCategorySummaries.IsChecked.Value, ShowBalanceGraph.IsChecked.Value, ShowMostExpensivePurchases.IsChecked.Value, ReportInflowGraph.IsChecked.Value, ReportOutflowGraph.IsChecked.Value);
+                string ss = viewModel.CurrentBalance.Replace("$", "");
+                Decimal cb = Convert.ToDecimal(ss);
+                Reports.CreateBasicReport(reportPath, viewModel.Saved.OrderByDescending(t => t.Date), reportDays, cb, ShowCategorySummaries.IsChecked.Value, ShowBalanceGraph.IsChecked.Value, ShowMostExpensivePurchases.IsChecked.Value, ReportInflowGraph.IsChecked.Value, ReportOutflowGraph.IsChecked.Value);
             }
         }
 

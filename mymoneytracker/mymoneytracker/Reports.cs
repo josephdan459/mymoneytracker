@@ -11,8 +11,15 @@ namespace mymoneytracker
 {
     class Reports
     {
-        public static void CreateBasicReport(string reportPath, IEnumerable<TransactionModel> transactions, int reportDays, bool ShowCategorySummaries, bool ShowBalanceGraph, bool ShowMostExpensivePurchases, bool ReportInflowGraph, bool ReportOutflowGraph)
+        public static void CreateBasicReport(string reportPath, IEnumerable<TransactionModel> transactions, int reportDays, Decimal currentBalance, bool ShowCategorySummaries, bool ShowBalanceGraph, bool ShowMostExpensivePurchases, bool ReportInflowGraph, bool ReportOutflowGraph)
         {
+
+            var bgOffset = 0;
+            if (ShowCategorySummaries)
+            {
+                bgOffset += 2;
+            }
+
             if (File.Exists(reportPath))
             {
                 File.Delete(reportPath);
@@ -37,7 +44,7 @@ namespace mymoneytracker
 
                 // get all distinct categories
                 DateTime cutoffDate = DateTime.Now.AddDays(-reportDays);
-                List<string> categories = transactions.Where(t => (t.Date.CompareTo(cutoffDate) > 0)).Select(t => t.Category).Distinct().ToList();
+                List<string> categories = transactions.Where(t => (t.Date.CompareTo(cutoffDate) >= 0)).Select(t => t.Category).Distinct().ToList();
                 
                 int i = 3;
                 foreach (var category in categories)
@@ -58,6 +65,15 @@ namespace mymoneytracker
 
                 /////
                 // balance graph - show balance per day over last X days
+                var bgCol = 1 + bgOffset;                
+                var r = 6;
+                i = 1;                
+                ws.Cells[r, bgCol].Value = currentBalance;
+                foreach (var t in transactions.Where(t => (t.Date.CompareTo(cutoffDate) >= 0)).ToList())
+                {
+                    ws.Cells[r + i, bgCol].Value = t.Balance;
+                    i++;
+                }
 
                 /////
                 // show top 10 largest expenses in last X days

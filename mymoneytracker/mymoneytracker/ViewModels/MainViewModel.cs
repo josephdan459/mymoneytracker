@@ -169,12 +169,7 @@ namespace mymoneytracker.ViewModels
 
             // apply current rules to current transactions and calculate account balance
             var cb = Categorize.ApplyCategoriesAndBalances(Saved, Rules, SqliteDataAccess.GetStartingBalance());            
-            if (cb < 0) {
-                CurrentBalance = "-$" + cb.ToString();
-            } else
-            {
-                CurrentBalance = "$" + cb.ToString();
-            }
+            CurrentBalance = "$" + cb.ToString();
         }
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
