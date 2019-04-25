@@ -20,7 +20,7 @@
                             SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="False" Canvas.Left="10" Canvas.Top="162" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*" Visibility="Hidden" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Date"  Binding="{Binding Date}" Width="*" SortDirection="Ascending" />
+                            <DataGridTextColumn Header="Date"  Binding="{Binding Date, StringFormat=d}" Width="*" SortDirection="Ascending" />
                             <DataGridTextColumn Header="Amount" Binding="{Binding Amount, StringFormat=$###0.00}" Width="*" />
                             <DataGridTextColumn Header="Payee" Binding="{Binding Payee}" Width="*" />
                             <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using mymoneytracker;
 
 namespace mymoneytracker_test
 {
@@ -9,7 +10,7 @@ namespace mymoneytracker_test
         [TestMethod]
         public void TestNewTransactionDefaultValues()
         {
-            var t = new mymoneytracker.TransactionModel();
+            var t = new TransactionModel();
 
             Assert.IsNotNull(t);
             Assert.AreEqual(t.Payee, "Payee");
