@@ -14,19 +14,33 @@ namespace mymoneytracker
     public class SqliteDataAccess
     {
 
-        private static string loadTransactionsQuery = "select * from Transactions";
+        private static string loadTransactionsQuery = "select * from Transactions order by Date desc";
         private static string loadRulesQuery = "select * from Rules";
+        private static string getStartingBalanceQuery = "select Setting_value from Configuration where Setting_name = 'starting_balance'";
+        private static string setStartingBalanceQuery = "replace into Configuration (Setting_name, Setting_value) values ('starting_balance', @sb)";
         private static string saveTransactionQuery = "insert into Transactions (Date, Payee, Amount, Custom_notes, Category) values (@Date, @Payee, @Amount, @Custom_notes, @Category)";
+        private static string updateTransactionQuery = "update Transactions set Date = @Date, Payee = @Payee, Amount = @Amount, Custom_notes = @Custom_notes, Category = @Category where Id = @id";
         private static string saveRuleQuery = "insert into Rules (Rule_name, Payee_regex, Direction, Category) values (@Rule_name, @Payee_regex, @Direction, @Category)";
+        private static string updateRuleQuery = "update Rules set Rule_name = @Rule_name, Payee_regex = @Payee_regex, Direction = @Direction, Category = @Category where Id = @id";
         private static string deleteTransactionByIdQuery = "delete from Transactions where Id = @id";
         private static string deleteRuleByNameQuery = "delete from Rules where Rule_name = @name";
+
 
         public static List<TransactionModel> LoadTransactions()
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
             {
-                var output = conn.Query<TransactionModel>(loadTransactionsQuery, new DynamicParameters());
-                return output.ToList();
+                //Todo Fix bug; if their is no table setup yet
+                try
+                {
+                    var output = conn.Query<TransactionModel>(loadTransactionsQuery, new DynamicParameters());
+                    return output.ToList();
+                }
+                catch
+                {
+                    List<TransactionModel> list = new List<TransactionModel>();
+                    return list;
+                }
             }
         }
 
@@ -34,8 +48,49 @@ namespace mymoneytracker
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
             {
-                var output = conn.Query<RuleModel>(loadRulesQuery, new DynamicParameters());
-                return output.ToList();
+                
+                //Todo Fix bug; if their is no table setup yet
+                try
+                {
+                    var output = conn.Query<RuleModel>(loadRulesQuery, new DynamicParameters());
+                    return output.ToList();
+                }
+                catch
+                {
+                    List<RuleModel> list = new List<RuleModel>();
+                    return list;
+                }
+            }
+        }
+
+        public static Decimal GetStartingBalance()
+        {
+            using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
+            {
+                //Todo Fix bug; if their is no account setup yet return 0 balance.
+                try
+                {
+                    var output = conn.Query<Decimal>(getStartingBalanceQuery, new DynamicParameters());
+
+                    if (output.Count() <= 0)
+                    {
+                        return Decimal.MinValue;
+                    }
+                    return output.Single();
+                }
+                catch
+                {
+                    return 0;
+                }
+                
+            }
+        }
+
+        public static void SetStartingBalance(Decimal sb)
+        {
+            using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
+            {
+                conn.Execute(setStartingBalanceQuery, new { sb });
             }
         }
 
@@ -48,11 +103,27 @@ namespace mymoneytracker
             }
         }
 
+        public static void UpdateTransaction(TransactionModel transaction)
+        {
+            using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
+            {
+                conn.Execute(updateTransactionQuery, transaction);
+            }
+        }
+
         public static void SaveRule(RuleModel rule)
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
             {
                 conn.Execute(saveRuleQuery, rule);
+            }
+        }
+
+        public static void UpdateRule(RuleModel rule)
+        {
+            using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
+            {
+                conn.Execute(updateRuleQuery, rule);
             }
         }
 
@@ -80,5 +151,6 @@ namespace mymoneytracker
             Console.WriteLine($"I loaded DB {dbPathAbs} from relative path {dbPathRel} from connection string {cs}");
             return cs;
         }
+
     }
 }

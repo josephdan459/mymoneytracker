@@ -11,16 +11,23 @@ namespace mymoneytracker
     public class Categorize
     {
 
-        public static void ApplyCategories(ObservableCollection<TransactionModel> transactions, ObservableCollection<RuleModel> rules)
+        public static Decimal ApplyCategoriesAndBalances(ObservableCollection<TransactionModel> transactions, ObservableCollection<RuleModel> rules, Decimal balance)
         {
             // Iterate through each transaction and add categories for any that are not manually set
-            foreach (var transaction in transactions)
+            foreach (var transaction in transactions.Reverse())
             {
+                // show account balance at time of transaction
+                balance += transaction.Amount;
+                transaction.Balance = balance;                
+
+                // apply category to transaction
                 if (transaction.Category == null || transaction.Category == "")
                 {
                     CategorizeTransaction(transaction, rules);
                 }
             }
+
+            return Math.Round(balance, 2);
         }
 
         private static void CategorizeTransaction(TransactionModel transaction, ObservableCollection<RuleModel> rules)
