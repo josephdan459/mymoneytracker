@@ -72,13 +72,12 @@
                     <Label Content="Here you can run reports to track finance changes over time" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
                     <Label Content="Report window:" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="3" Canvas.Top="59"/>
                     <TextBox x:Name="reportWindow" Height="23" TextWrapping="Wrap" Text="30" Width="48" GotFocus="TbRuleName_GotFocus" Canvas.Top="62" Canvas.Left="96" />
-                    <Button Content="Save Report..." Width="141" Canvas.Left="10" Canvas.Top="240" Height="29" Click="ReportButton_Click"/>
+                    <Button Content="Save Report..." Width="141" Canvas.Left="10" Canvas.Top="226" Height="29" Click="ReportButton_Click"/>
                     <Label Content="days" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="146" Canvas.Top="59"/>
-                    <CheckBox x:Name="ReportInflowGraph" Content="Create inflow graph" Canvas.Top="177" Canvas.Left="11" IsChecked="True"/>
-                    <CheckBox x:Name="ReportOutflowGraph" Content="Create outflow graph" Canvas.Top="205" Canvas.Left="11" IsChecked="True"/>
+                    <CheckBox x:Name="ReportInflowGraph" Content="Create inflow graph" Canvas.Top="153" Canvas.Left="11" IsChecked="True"/>
+                    <CheckBox x:Name="ReportOutflowGraph" Content="Create outflow graph" Canvas.Top="181" Canvas.Left="11" IsChecked="True"/>
                     <CheckBox x:Name="ShowCategorySummaries" Content="Show category summaries" Canvas.Top="100" Canvas.Left="11" IsChecked="True"/>
-                    <CheckBox x:Name="ShowBalanceGraph" Content="Graph account balance over time" Canvas.Top="124" Canvas.Left="11" IsChecked="True"/>
-                    <CheckBox x:Name="ShowMostExpensivePurchases" Content="List most expensive purchases" Canvas.Top="150" Canvas.Left="11" IsChecked="True"/>
+                    <CheckBox x:Name="ShowMostExpensivePurchases" Content="List most expensive purchases" Canvas.Top="126" Canvas.Left="11" IsChecked="True"/>
                 </Canvas>
             </TabItem>
             <TabItem Header="Import">
@@ -149,7 +148,7 @@
                     <Label x:Name="CsvNumberPreview" Content="" Canvas.Left="19" Canvas.Top="481" Width="394" Height="28"/>
                 </Canvas>
             </TabItem>
-            
+
 
 
         </TabControl>

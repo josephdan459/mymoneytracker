@@ -13,7 +13,7 @@ namespace mymoneytracker
 {
     class Reports
     {
-        public static void CreateBasicReport(string reportPath, IEnumerable<TransactionModel> transactions, int reportDays, Decimal currentBalance, bool ShowCategorySummaries, bool ShowBalanceGraph, bool ShowMostExpensivePurchases, bool ReportInflowGraph, bool ReportOutflowGraph)
+        public static void CreateBasicReport(string reportPath, IEnumerable<TransactionModel> transactions, int reportDays, Decimal currentBalance, bool ShowCategorySummaries, bool ShowMostExpensivePurchases, bool ReportInflowGraph, bool ReportOutflowGraph)
         {
 
             var bgOffset = 0;
@@ -32,15 +32,17 @@ namespace mymoneytracker
             {
                 var ws = f.Workbook.Worksheets.Add($"My {reportDays}-day Budget Report");
 
-                // get all distinct categories
+                // extract useful statistics from transaction data
                 DateTime cutoffDate = DateTime.Now.AddDays(-reportDays);
                 List<string> categories = transactions.Where(t => (t.Date.CompareTo(cutoffDate) >= 0)).Select(t => t.Category).Distinct().ToList();
-
+                List<string> inflowSources = transactions.Where(t => ((t.Date.CompareTo(cutoffDate) >= 0) && (t.Amount > 0))).Select(t => t.Payee).Distinct().ToList();
+                List<string> outflowSources = transactions.Where(t => ((t.Date.CompareTo(cutoffDate) >= 0) && (t.Amount < 0))).Select(t => t.Payee).Distinct().ToList();
 
                 /////
                 // category summmaries - column showing gain/loss per category over X days
                 if (ShowCategorySummaries)
                 {
+                    // format cells
                     ws.Cells[1, 1, 1, 2].Merge = true;
                     ws.Cells[1, 1, 1, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                     ws.Cells[1, 1, 1, 2].Value = "Category Summaries";
@@ -49,8 +51,7 @@ namespace mymoneytracker
                     ws.Cells[2, 2].Value = "Gain/Loss";
                     ws.Cells[2, 1, 2, 2].Style.Font.Bold = true;
 
-
-
+                    // write gain/loss per category
                     i = 3;
                     foreach (var category in categories)
                     {
@@ -67,66 +68,31 @@ namespace mymoneytracker
                         ws.Cells[i, 2].Value = changed;
                         i++;
                     }
-
                     ws.Column(1).Width = 20;
                     ws.Column(2).Width = 20;
-
                     bgOffset += 3;
-                }
-
-                /////
-                // balance graph - show balance per day over last X days
-                if (ShowBalanceGraph && false)
-                {
-                    var bgCol = 1 + bgOffset;
-                    var r = 10;
-                    i = 1;
-                    foreach (var t in transactions.Where(t => (t.Date.CompareTo(cutoffDate) >= 0)).ToList())
-                    {
-                        ws.Cells[r + i, bgCol].Value = i;
-                        ws.Cells[r + i, bgCol + 1].Value = t.Balance;
-                        i++;
-                    }
-
-                    ExcelChart lineChart = ws.Drawings.AddChart("lineChart", eChartType.Line);
-                    lineChart.Title.Text = "Account Balance";
-
-                    var balanceRange = ws.Cells[r + 1, bgCol, r + 1 + transactions.Where(t => (t.Date.CompareTo(cutoffDate) >= 0)).Count() - 1, bgCol];
-                    var balanceAmounts = ws.Cells[r + 1, bgCol + 1, r + 1 + transactions.Where(t => (t.Date.CompareTo(cutoffDate) >= 0)).Count() - 1, bgCol + 1];
-                    balanceRange.Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                    balanceAmounts.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-
-                    var bs = (ExcelLineChartSerie)lineChart.Series.Add(balanceAmounts, balanceRange);
-                    //bs.Header = "Account Balance";
-
-                    //size of the chart
-                    lineChart.SetSize(600, 300);
-
-                    //add the chart at cell B6
-                    lineChart.SetPosition(5, 0, 1, 0);
-
-                    bgOffset += 3;
-
-
                 }
 
                 /////
                 // show top 10 largest expenses in last X days
                 if (ShowMostExpensivePurchases)
                 {
-                    var bgCol = 3 + bgOffset;
-                    var r = 4;
-
+                    // format cells
+                    var bgCol = 1 + bgOffset;
+                    var r = 1;
                     ws.Cells[r, bgCol, r, bgCol + 2].Merge = true;
                     ws.Cells[r, bgCol, r, bgCol + 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                     ws.Cells[r, bgCol, r, bgCol + 2].Value = "Largest Expenses";
                     ws.Cells[r, bgCol, r, bgCol + 2].Style.Font.Bold = true;
-
                     r += 1;
                     ws.Cells[r, bgCol].Value = "Payee";
                     ws.Cells[r, bgCol + 1].Value = "Amount";
                     ws.Cells[r, bgCol + 2].Value = "Category";
+                    ws.Column(bgCol).Width = 15;
+                    ws.Column(bgCol + 1).Width = 15;
+                    ws.Column(bgCol + 2).Width = 15;
 
+                    // write 10 largest transactions
                     List<TransactionModel> mostExpensive = transactions.Where(t => t.Amount < 0).OrderBy(t => t.Amount).Take(10).ToList();                    
                     i = 1;
                     foreach (var t in mostExpensive)
@@ -135,15 +101,10 @@ namespace mymoneytracker
                         ws.Cells[r + i, bgCol + 1].Value = t.Amount;
                         ws.Cells[r + i, bgCol + 2].Value = t.Category;
                         i++;
-                    }
-
-
-                    ws.Column(bgCol).Width = 15;
-                    ws.Column(bgCol + 1).Width = 15;
-                    ws.Column(bgCol + 2).Width = 15;
-
+                    }                    
                     bgOffset += 3;
                 }
+
 
                 /////
                 // pie graph sources of inflow over X days
