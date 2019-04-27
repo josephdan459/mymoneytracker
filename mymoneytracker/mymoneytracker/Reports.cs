@@ -88,12 +88,12 @@ namespace mymoneytracker
                     ws.Cells[r, bgCol].Value = "Payee";
                     ws.Cells[r, bgCol + 1].Value = "Amount";
                     ws.Cells[r, bgCol + 2].Value = "Category";
-                    ws.Column(bgCol).Width = 15;
+                    ws.Column(bgCol).Width = 25;
                     ws.Column(bgCol + 1).Width = 15;
-                    ws.Column(bgCol + 2).Width = 15;
+                    ws.Column(bgCol + 2).Width = 20;
 
                     // write 10 largest transactions
-                    List<TransactionModel> mostExpensive = transactions.Where(t => t.Amount < 0).OrderBy(t => t.Amount).Take(10).ToList();                    
+                    List<TransactionModel> mostExpensive = transactions.Where(t => t.Amount < 0 && (t.Date.CompareTo(cutoffDate) >= 0)).OrderBy(t => t.Amount).Take(10).ToList();                    
                     i = 1;
                     foreach (var t in mostExpensive)
                     {
@@ -118,18 +118,25 @@ namespace mymoneytracker
                     ws.Cells[r, bgCol, r, bgCol + 1].Value = "Sources of Inflow";
                     ws.Cells[r, bgCol, r, bgCol + 1].Style.Font.Bold = true;
 
-                    // write gain/loss per payee
-                    i = 3;
+                    // write gain per payee
+                    var gains = new List<Tuple<decimal, string>> { };                    
                     foreach (var p in inflowSources)
                     {
                         // sum the changes over last X days                    
                         decimal changed = (from t in transactions where ((t.Payee == p) && (t.Date.CompareTo(cutoffDate) >= 0) && (t.Amount > 0)) select t.Amount).Sum();
-                        
-                        ws.Cells[i, bgCol].Value = p;
-                        ws.Cells[i, bgCol+1].Value = changed;
+
+                        gains.Add(Tuple.Create(changed, p));
+                    }
+
+                    // sort and print totals
+                    i = 3;
+                    foreach (var g in gains.OrderByDescending(g => g.Item1))
+                    {
+                        ws.Cells[i, bgCol].Value = g.Item2;
+                        ws.Cells[i, bgCol + 1].Value = g.Item1;
                         i++;
                     }
-                    ws.Column(bgCol).Width = 20;
+                    ws.Column(bgCol).Width = 25;
                     ws.Column(bgCol+1).Width = 20;
                     bgOffset += 3;
                 }
@@ -146,18 +153,26 @@ namespace mymoneytracker
                     ws.Cells[r, bgCol, r, bgCol + 1].Value = "Sources of Outflow";
                     ws.Cells[r, bgCol, r, bgCol + 1].Style.Font.Bold = true;
 
-                    // write gain/loss per payee
-                    i = 3;
+                    // write loss per payee
+                    var losses = new List<Tuple<decimal, string>> { };
                     foreach (var p in outflowSources)
                     {
                         // sum the changes over last X days                    
                         decimal changed = (from t in transactions where ((t.Payee == p) && (t.Date.CompareTo(cutoffDate) >= 0) && (t.Amount < 0)) select t.Amount).Sum();
 
-                        ws.Cells[i, bgCol].Value = p;
-                        ws.Cells[i, bgCol + 1].Value = changed;
+                        losses.Add(Tuple.Create(changed, p));
+                    }
+
+                    // sort and print totals
+                    i = 3;
+                    foreach (var l in losses.OrderBy(l => l.Item1))
+                    {
+                        ws.Cells[i, bgCol].Value = l.Item2;
+                        ws.Cells[i, bgCol + 1].Value = l.Item1;
                         i++;
                     }
-                    ws.Column(bgCol).Width = 20;
+
+                    ws.Column(bgCol).Width = 25;
                     ws.Column(bgCol + 1).Width = 20;
                     bgOffset += 3;
                 }
