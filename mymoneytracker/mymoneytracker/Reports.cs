@@ -37,7 +37,7 @@ namespace mymoneytracker
                 List<string> categories = transactions.Where(t => (t.Date.CompareTo(cutoffDate) >= 0)).Select(t => t.Category).Distinct().ToList();
                 List<string> inflowSources = transactions.Where(t => ((t.Date.CompareTo(cutoffDate) >= 0) && (t.Amount > 0))).Select(t => t.Payee).Distinct().ToList();
                 List<string> outflowSources = transactions.Where(t => ((t.Date.CompareTo(cutoffDate) >= 0) && (t.Amount < 0))).Select(t => t.Payee).Distinct().ToList();
-
+                
                 /////
                 // category summmaries - column showing gain/loss per category over X days
                 if (ShowCategorySummaries)
@@ -102,25 +102,65 @@ namespace mymoneytracker
                         ws.Cells[r + i, bgCol + 2].Value = t.Category;
                         i++;
                     }                    
+                    bgOffset += 4;
+                }
+
+
+                /////
+                // show sources of inflow over X days
+                if (ReportInflowGraph)
+                {
+                    // format cells
+                    var bgCol = 1 + bgOffset;
+                    var r = 1;
+                    ws.Cells[r, bgCol, r, bgCol + 1].Merge = true;
+                    ws.Cells[r, bgCol, r, bgCol + 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    ws.Cells[r, bgCol, r, bgCol + 1].Value = "Sources of Inflow";
+                    ws.Cells[r, bgCol, r, bgCol + 1].Style.Font.Bold = true;
+
+                    // write gain/loss per payee
+                    i = 3;
+                    foreach (var p in inflowSources)
+                    {
+                        // sum the changes over last X days                    
+                        decimal changed = (from t in transactions where ((t.Payee == p) && (t.Date.CompareTo(cutoffDate) >= 0) && (t.Amount > 0)) select t.Amount).Sum();
+                        
+                        ws.Cells[i, bgCol].Value = p;
+                        ws.Cells[i, bgCol+1].Value = changed;
+                        i++;
+                    }
+                    ws.Column(bgCol).Width = 20;
+                    ws.Column(bgCol+1).Width = 20;
                     bgOffset += 3;
                 }
 
-
                 /////
-                // pie graph sources of inflow over X days
-                if (ReportInflowGraph)
-                {
-
-                }
-
-                /////
-                // pie graph sources of outflow over X days
+                // show sources of outflow over X days
                 if (ReportOutflowGraph)
                 {
+                    // format cells
+                    var bgCol = 1 + bgOffset;
+                    var r = 1;
+                    ws.Cells[r, bgCol, r, bgCol + 1].Merge = true;
+                    ws.Cells[r, bgCol, r, bgCol + 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    ws.Cells[r, bgCol, r, bgCol + 1].Value = "Sources of Outflow";
+                    ws.Cells[r, bgCol, r, bgCol + 1].Style.Font.Bold = true;
 
+                    // write gain/loss per payee
+                    i = 3;
+                    foreach (var p in outflowSources)
+                    {
+                        // sum the changes over last X days                    
+                        decimal changed = (from t in transactions where ((t.Payee == p) && (t.Date.CompareTo(cutoffDate) >= 0) && (t.Amount < 0)) select t.Amount).Sum();
+
+                        ws.Cells[i, bgCol].Value = p;
+                        ws.Cells[i, bgCol + 1].Value = changed;
+                        i++;
+                    }
+                    ws.Column(bgCol).Width = 20;
+                    ws.Column(bgCol + 1).Width = 20;
+                    bgOffset += 3;
                 }
-
-
 
                 f.Save();
             }
