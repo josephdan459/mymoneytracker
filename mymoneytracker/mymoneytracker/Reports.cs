@@ -13,7 +13,7 @@ namespace mymoneytracker
 {
     class Reports
     {
-        public static void CreateBasicReport(string reportPath, IEnumerable<TransactionModel> transactions, int reportDays, Decimal currentBalance, bool ShowCategorySummaries, bool ShowMostExpensivePurchases, bool ReportInflowGraph, bool ReportOutflowGraph)
+        public static void CreateBasicReport(string reportPath, IEnumerable<TransactionModel> transactions, int reportDays, Decimal currentBalance, bool ShowCategorySummaries, bool ShowMostExpensivePurchases, bool ReportInflow, bool ReportOutflow)
         {
 
             var bgOffset = 0;
@@ -108,7 +108,7 @@ namespace mymoneytracker
 
                 /////
                 // show sources of inflow over X days
-                if (ReportInflowGraph)
+                if (ReportInflow)
                 {
                     // format cells
                     var bgCol = 1 + bgOffset;
@@ -143,7 +143,7 @@ namespace mymoneytracker
 
                 /////
                 // show sources of outflow over X days
-                if (ReportOutflowGraph)
+                if (ReportOutflow)
                 {
                     // format cells
                     var bgCol = 1 + bgOffset;

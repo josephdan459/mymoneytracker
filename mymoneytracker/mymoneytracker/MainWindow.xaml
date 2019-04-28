@@ -74,8 +74,8 @@
                     <TextBox x:Name="reportWindow" Height="23" TextWrapping="Wrap" Text="30" Width="48" GotFocus="TbRuleName_GotFocus" Canvas.Top="62" Canvas.Left="96" />
                     <Button Content="Save Report..." Width="141" Canvas.Left="10" Canvas.Top="226" Height="29" Click="ReportButton_Click"/>
                     <Label Content="days" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="146" Canvas.Top="59"/>
-                    <CheckBox x:Name="ReportInflowGraph" Content="Create inflow graph" Canvas.Top="153" Canvas.Left="11" IsChecked="True"/>
-                    <CheckBox x:Name="ReportOutflowGraph" Content="Create outflow graph" Canvas.Top="181" Canvas.Left="11" IsChecked="True"/>
+                    <CheckBox x:Name="ReportInflow" Content="Show inflow sources" Canvas.Top="153" Canvas.Left="11" IsChecked="True"/>
+                    <CheckBox x:Name="ReportOutflow" Content="Show outflow sources" Canvas.Top="181" Canvas.Left="11" IsChecked="True"/>
                     <CheckBox x:Name="ShowCategorySummaries" Content="Show category summaries" Canvas.Top="100" Canvas.Left="11" IsChecked="True"/>
                     <CheckBox x:Name="ShowMostExpensivePurchases" Content="List most expensive purchases" Canvas.Top="126" Canvas.Left="11" IsChecked="True"/>
                 </Canvas>

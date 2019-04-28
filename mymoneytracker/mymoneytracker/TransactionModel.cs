@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace mymoneytracker
 {
-    //todo : implement INotify
     public class TransactionModel
     {
         public TransactionModel()
