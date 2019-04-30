@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Initial Configuration" Height="118.148" Width="515.057">
     <StackPanel Margin="0,0,0,0">
-        <TextBlock Text="Enter your starting bank account balance below. Example format: 1234.56" Height="26" />
+        <TextBlock x:Name="sbprompttext" Text="Enter your starting bank account balance below. Example format: 1234.56" Height="26" />
         <TextBox x:Name="ResponseTextBox" Height="28" />
         <Button Content="OK" Click="OKButton_Click" Height="22" />
     </StackPanel>

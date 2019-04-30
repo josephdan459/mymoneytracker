@@ -21,17 +21,41 @@ namespace mymoneytracker.ViewModels
             var StartingBalance = SqliteDataAccess.GetStartingBalance();
             if (StartingBalance == Decimal.MinValue)
             {
-                StartingBalanceDialog dialog = new StartingBalanceDialog();
-                if (dialog.ShowDialog() == true && dialog.DialogResult == true)
+                var set = false;
+                var err = "";
+
+                while (!set)
                 {
-                    // todo: simple validation
-                    SqliteDataAccess.SetStartingBalance(Convert.ToDecimal(dialog.ResponseText));
-                } else
-                {
-                    ErrorMessage = "Must input starting balance!";
-                    System.Windows.Application.Current.Shutdown();
-                    return;
+                    StartingBalanceDialog dialog = new StartingBalanceDialog();
+
+                    if (err != "")
+                    {
+                        dialog.sbprompttext.Text = $"Input starting balance ({err})";
+                    }
+
+                    if (dialog.ShowDialog() == true && dialog.DialogResult == true)
+                    {
+                        Decimal sb;
+                        try
+                        {
+                            sb = Convert.ToDecimal(dialog.ResponseText);
+                        }
+                        catch
+                        {
+                            err = "invalid input";
+                            continue;
+                        }
+
+                        SqliteDataAccess.SetStartingBalance(sb);
+                        set = true;
+                    }
+                    else
+                    {
+                        err = "invalid input";
+                        continue;
+                    }
                 }
+                
 
             }
 
