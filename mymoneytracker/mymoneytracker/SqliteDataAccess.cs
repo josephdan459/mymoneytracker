@@ -30,8 +30,17 @@ namespace mymoneytracker
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
             {
-                var output = conn.Query<TransactionModel>(loadTransactionsQuery, new DynamicParameters());
-                return output.ToList();
+                //Todo Fix bug; if their is no table setup yet
+                try
+                {
+                    var output = conn.Query<TransactionModel>(loadTransactionsQuery, new DynamicParameters());
+                    return output.ToList();
+                }
+                catch
+                {
+                    List<TransactionModel> list = new List<TransactionModel>();
+                    return list;
+                }
             }
         }
 
@@ -39,8 +48,49 @@ namespace mymoneytracker
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
             {
-                var output = conn.Query<RuleModel>(loadRulesQuery, new DynamicParameters());
-                return output.ToList();
+                
+                //Todo Fix bug; if their is no table setup yet
+                try
+                {
+                    var output = conn.Query<RuleModel>(loadRulesQuery, new DynamicParameters());
+                    return output.ToList();
+                }
+                catch
+                {
+                    List<RuleModel> list = new List<RuleModel>();
+                    return list;
+                }
+            }
+        }
+
+        public static Decimal GetStartingBalance()
+        {
+            using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
+            {
+                //Todo Fix bug; if their is no account setup yet return 0 balance.
+                try
+                {
+                    var output = conn.Query<Decimal>(getStartingBalanceQuery, new DynamicParameters());
+
+                    if (output.Count() <= 0)
+                    {
+                        return Decimal.MinValue;
+                    }
+                    return output.Single();
+                }
+                catch
+                {
+                    return 0;
+                }
+                
+            }
+        }
+
+        public static void SetStartingBalance(Decimal sb)
+        {
+            using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
+            {
+                conn.Execute(setStartingBalanceQuery, new { sb });
             }
         }
 

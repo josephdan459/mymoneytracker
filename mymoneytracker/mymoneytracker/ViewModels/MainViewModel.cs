@@ -1,4 +1,6 @@
-﻿using System;
+﻿using OfficeOpenXml.Utils;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,14 +11,14 @@ using System.Threading.Tasks;
 
 namespace mymoneytracker.ViewModels
 {
-    public class MainViewModel : INotifyPropertyChanged
-    {        
+    public class MainViewModel : INotifyPropertyChanged, IDataErrorInfo
+    {
         public MainViewModel()
-        {
+        {            
             NewTransaction = new TransactionModel();
             NewRule = new RuleModel();
             Saved = new ObservableCollection<TransactionModel>();
-            Rules = new ObservableCollection<RuleModel>();
+            Rules = new ObservableCollection<RuleModel>();            
 
             var StartingBalance = SqliteDataAccess.GetStartingBalance();
             if (StartingBalance == Decimal.MinValue)
@@ -33,16 +35,39 @@ namespace mymoneytracker.ViewModels
                     return;
                 }
 
-            }
+            }            
 
             RefreshData();
         }
         #region Fields
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;        
         #endregion
 
-        #region Properties
+        #region Properties                
         public string ErrorMessage { get; set; }
+
+        public string Error
+        {
+            get { return null; }
+        }
+
+        public string this[string columnName]
+        {
+            get
+            {
+                string result = string.Empty;
+                /*Enter Property Name Below and Set Validation Condition;
+                Refer to class definition file for referenced class files 
+                for validation on properties within referenced classes
+                if (columnName == "")
+                {
+                    if (this.Name == "")
+                        result = "Name can not be empty";
+                }
+                */
+                return result;
+            }
+        }    
 
         public TransactionModel NewTransaction { get; set; }
 
@@ -67,12 +92,13 @@ namespace mymoneytracker.ViewModels
                 if (TransactionDirection.Contains("Outflow"))
                 {
                     NewTransaction.Amount = -Math.Abs(NewTransaction.Amount);
-                } else
+                }
+                else
                 {
                     NewTransaction.Amount = Math.Abs(NewTransaction.Amount);
                 }
 
-                SqliteDataAccess.SaveTransaction(NewTransaction);                
+                SqliteDataAccess.SaveTransaction(NewTransaction);
 
                 RefreshData();
             }
@@ -85,26 +111,26 @@ namespace mymoneytracker.ViewModels
         public void RemoveTrans()
         {
             try
-            {                
+            {
                 SqliteDataAccess.DeleteTransactionById(SelectedTransaction.Id);
                 RefreshData();
             }
             catch (Exception ex)
             {
-                ErrorMessage=("An error occured: " + ex.Message + "\n\nStack trace: " + ex.StackTrace + "Error!");
+                ErrorMessage = ("An error occured: " + ex.Message + "\n\nStack trace: " + ex.StackTrace + "Error!");
             }
         }
 
         public void AddRule()
         {
             try
-            {               
+            {
                 if (NewRule.Direction == null)
                 {
                     throw new ArgumentException("Must select rule direction");
                 }
                 SqliteDataAccess.SaveRule(NewRule);
-                RefreshData();                
+                RefreshData();
             }
             catch (Exception ex)
             {
@@ -115,7 +141,7 @@ namespace mymoneytracker.ViewModels
         public void RemoveRule()
         {
             try
-            {                
+            {
                 SqliteDataAccess.DeleteRuleByName(SelectedRule.Rule_name);
                 RefreshData();
             }
@@ -168,10 +194,15 @@ namespace mymoneytracker.ViewModels
             }
 
             // apply current rules to current transactions and calculate account balance
-            var cb = Categorize.ApplyCategoriesAndBalances(Saved, Rules, SqliteDataAccess.GetStartingBalance());            
-            CurrentBalance = "$" + cb.ToString();
+            var cb = Categorize.ApplyCategoriesAndBalances(Saved, Rules, SqliteDataAccess.GetStartingBalance());
+            if (cb < 0) {
+                CurrentBalance = "-$" + cb.ToString();
+            } else
+            {
+                CurrentBalance = "$" + cb.ToString();
+            }
         }
-
+        
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
