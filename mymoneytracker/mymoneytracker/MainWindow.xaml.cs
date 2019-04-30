@@ -263,7 +263,15 @@ namespace mymoneytracker
                     db = CsvImport.DirectionBehavior.Both;
                 }
 
-                results = CsvImport.TransactionsFromCsv(csvPath, currentDate, dateCol, amountCol, payeeCol, db);
+                try
+                {
+                    results = CsvImport.TransactionsFromCsv(csvPath, currentDate, dateCol, amountCol, payeeCol, db);
+                }                
+                catch
+                {
+                    CsvImportStatus.Content = "Import failed!";
+                    return;
+                }
             } else
             {
                 CsvImportStatus.Content = "Invalid import selection";
