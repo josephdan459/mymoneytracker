@@ -66,6 +66,10 @@ namespace mymoneytracker
             viewModel.AddTrans(cbDirectionTransaction.Text);
             // refresh current balance label
             BalanceLabel.GetBindingExpression(Label.ContentProperty).UpdateTarget();
+            tbAmount.Text = "";
+            tbPayee.Text = "";
+            tbCategory.Text = "Category";
+            tbNotes.Text = "Notes";
             errorContent.Content = "";
         }
         private void DeleteTransactionButtonClick(object sender, RoutedEventArgs e)
