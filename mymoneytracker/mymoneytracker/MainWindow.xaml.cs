@@ -36,9 +36,37 @@ namespace mymoneytracker
 
         private void BtnAddTransaction_Click(object sender, RoutedEventArgs e)
         {
+            // validations
+            if (viewModel.NewTransaction.Date.CompareTo(System.DateTime.Now) > 0)
+            {
+                viewModel.NewTransaction.Date = System.DateTime.Now;
+                errorContent.Content = "No future dates!";
+                return;
+            }
+            if (viewModel.NewTransaction.Payee == "" || viewModel.NewTransaction.Payee == "Payee")
+            {
+                viewModel.NewTransaction.Payee = "Payee";
+                errorContent.Content = "Must provide Payee!";
+                return;
+            }
+            if (viewModel.NewTransaction.Amount == 0)
+            {
+                errorContent.Content = "Must provide Amount!";
+                return;
+            }
+            if (viewModel.NewTransaction.Category == "Category")
+            {
+                viewModel.NewTransaction.Category = "";
+            }
+            if (viewModel.NewTransaction.Custom_notes == "Notes")
+            {
+                viewModel.NewTransaction.Custom_notes = "";
+            }
+
             viewModel.AddTrans(cbDirectionTransaction.Text);
             // refresh current balance label
             BalanceLabel.GetBindingExpression(Label.ContentProperty).UpdateTarget();
+            errorContent.Content = "";
         }
         private void DeleteTransactionButtonClick(object sender, RoutedEventArgs e)
         {
@@ -274,31 +302,70 @@ namespace mymoneytracker
                     int rowIndex = e.Row.GetIndex();
                     var el = e.EditingElement as TextBox;
                     var changedColumn = (c.Binding as Binding).Path.Path;
-                    switch (changedColumn)
+                    try
                     {
-                        case "Date":
-                            // todo: verify valid date?
-                            editedTransaction.Date = Convert.ToDateTime(el.Text);
-                            break;
-                        case "Amount":
-                            editedTransaction.Amount = Convert.ToDecimal(el.Text.Replace("$", ""));
-                            break;
-                        case "Payee":
-                            editedTransaction.Payee = el.Text;
-                            break;
-                        case "Category":
-                            editedTransaction.Category = el.Text;
-                            break;
-                        case "Custom_notes":
-                            editedTransaction.Custom_notes = el.Text;
-                            break;
-                        default:
-                            // not allowed to change balance, return now
-                            return;
+                        switch (changedColumn)
+                        {
+                            case "Date":
+                                DateTime d;
+                                try
+                                {
+                                    d = Convert.ToDateTime(el.Text);
+                                }
+                                catch
+                                {
+                                    // error parsing
+                                    this.Recent_Transactions.CancelEdit();
+                                    return;
+                                }
+                               if (d.CompareTo(System.DateTime.Now) > 0){
+                                    // cannot use a future date
+                                    this.Recent_Transactions.CancelEdit();
+                                    return;
+                                }                                
+                                editedTransaction.Date = d;
+                                break;
+                            case "Amount":
+                                Decimal a;
+                                try
+                                {
+                                    a = Convert.ToDecimal(el.Text.Replace("$", ""));
+                                }
+                                catch
+                                {
+                                    // error parsing
+                                    this.Recent_Transactions.CancelEdit();
+                                    return;
+                                }
+                                editedTransaction.Amount = a;
+                                break;
+                            case "Payee":
+                                editedTransaction.Payee = el.Text;
+                                if (el.Text == "")
+                                {
+                                    // payee cannot be blank
+                                    this.Recent_Transactions.CancelEdit();
+                                    return;
+                                }
+                                break;
+                            case "Category":
+                                editedTransaction.Category = el.Text;
+                                break;
+                            case "Custom_notes":
+                                editedTransaction.Custom_notes = el.Text;
+                                break;
+                            default:
+                                // not allowed to change balance, return now
+                                return;
+                        }
+                        // save edited transaction to DB and refresh UI
+                        viewModel.UpdateTransaction(editedTransaction);
+                        BalanceLabel.GetBindingExpression(Label.ContentProperty).UpdateTarget();
+                        }
+                    catch
+                    {
+                        return;
                     }
-                    // save edited transaction to DB and refresh UI
-                    viewModel.UpdateTransaction(editedTransaction);
-                    BalanceLabel.GetBindingExpression(Label.ContentProperty).UpdateTarget();
                 }                
                 
             }

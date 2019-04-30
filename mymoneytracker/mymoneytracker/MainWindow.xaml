@@ -41,6 +41,7 @@
                     <Button x:Name="btnAddTransaction" Content="Add Transaction" Canvas.Left="10" Canvas.Top="127" Width="120" Click="BtnAddTransaction_Click"/>
                     <Button Content="Delete Transaction" Click="DeleteTransactionButtonClick" Canvas.Left="169" Canvas.Top="127" Width="120"/>
                     <Label Content="Current Balance:" Canvas.Left="749" Canvas.Top="18" Height="27" Width="103"/>
+                    <Label x:Name="errorContent" Content="" Canvas.Left="555" Canvas.Top="85" Height="42" Width="297"/>
                     <Label Name="BalanceLabel" Content="{Binding Path=CurrentBalance, StringFormat=$###0.00}" Canvas.Left="749" Canvas.Top="33" Height="27" Width="103"/>
                 </Canvas>
             </TabItem>
