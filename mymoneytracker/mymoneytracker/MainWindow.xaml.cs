@@ -66,8 +66,8 @@ namespace mymoneytracker
             viewModel.AddTrans(cbDirectionTransaction.Text);
             // refresh current balance label
             BalanceLabel.GetBindingExpression(Label.ContentProperty).UpdateTarget();
-            tbAmount.Text = "";
-            tbPayee.Text = "";
+            tbAmount.Text = "0";
+            tbPayee.Text = "Payee";
             tbCategory.Text = "Category";
             tbNotes.Text = "Notes";
             errorContent.Content = "";
@@ -81,7 +81,33 @@ namespace mymoneytracker
 
         private void BtnAddRule_Click(object sender, RoutedEventArgs e)
         {
+
+            if (viewModel.NewRule.Rule_name == "Rule Name" || viewModel.NewRule.Rule_name == "")
+            {
+                ruleErrorContent.Content = "Must provide rule name!";
+                return;
+            }
+            if (viewModel.NewRule.Category == "Category" || viewModel.NewRule.Category == "")
+            {
+                ruleErrorContent.Content = "Must provide rule category!";
+                return;
+            }
+            if (viewModel.NewRule.Payee_regex == "Match Text" || viewModel.NewRule.Payee_regex == "")
+            {
+                ruleErrorContent.Content = "Must provide match text!";
+                return;
+            }
+            if(cbDirectionRule.Text == "")
+            {
+                ruleErrorContent.Content = "Must pick rule direction!";
+                return;
+            }
+
             viewModel.AddRule();
+            tbRuleName.Text = "Rule Name";
+            tbRuleCategory.Text = "Category";
+            tbRuleMatchRegex.Text = "Match Text";
+            ruleErrorContent.Content = "";
         }
         private void DeleteRuleButtonClick(object sender, RoutedEventArgs e)
         {
@@ -390,15 +416,35 @@ namespace mymoneytracker
                     switch (changedColumn)
                     {
                         case "Rule_name":
+                            if (el.Text == "")
+                            {
+                                Rules_List.CancelEdit();
+                                return;
+                            }
                             editedRule.Rule_name = el.Text;
                             break;
                         case "Category":
+                            if (el.Text == "")
+                            {
+                                Rules_List.CancelEdit();
+                                return;
+                            }
                             editedRule.Category = el.Text;
                             break;
                         case "Payee_regex":
+                            if (el.Text == "")
+                            {
+                                Rules_List.CancelEdit();
+                                return;
+                            }
                             editedRule.Payee_regex = el.Text;
                             break;
                         case "Direction":
+                            if (el.Text != "Inflow" && el.Text != "Outflow")
+                            {
+                                Rules_List.CancelEdit();
+                                return;
+                            }
                             editedRule.Direction = el.Text;
                             break;
                         default:

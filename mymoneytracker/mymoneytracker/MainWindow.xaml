@@ -48,6 +48,7 @@
             <TabItem Header="Rules" Selector.Unselected="RuleTab_LostFocus" >
                 <Canvas>
                     <Label Content="Here you can view all classification rules and add new ones" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
+                    <Label x:Name="ruleErrorContent" Content="" Canvas.Left="327" Canvas.Top="87" Height="42" Width="297"/>
                     <Button Content="Delete Rule" Click="DeleteRuleButtonClick" Canvas.Left="169" Canvas.Top="127" Width="120"/>
                     <DataGrid x:Name="Rules_List" CellEditEnding="Rules_CellEditEnding" HorizontalAlignment="Left" Height="443" VerticalAlignment="Top" Width="872" ItemsSource="{Binding Rules}"
                         SelectedItem="{Binding SelectedRule, Mode=TwoWay}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="False" Canvas.Left="10" Canvas.Top="162">
