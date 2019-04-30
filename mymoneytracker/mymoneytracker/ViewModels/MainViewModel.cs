@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace mymoneytracker.ViewModels
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : INotifyPropertyChanged, IDataErrorInfo
     {        
         public MainViewModel()
         {
@@ -68,6 +68,29 @@ namespace mymoneytracker.ViewModels
         #region Properties
         public string ErrorMessage { get; set; }
 
+        public string Error
+        {
+            get { return null; }
+        }
+
+        public string this[string columnName]
+        {
+            get
+            {
+                string result = string.Empty;
+                /*Enter Property Name Below and Set Validation Condition;
+                Refer to class definition file for referenced class files 
+                for validation on properties within referenced classes
+                if (columnName == "")
+                {
+                    if (this.Name == "")
+                        result = "Name can not be empty";
+                }
+                */
+                return result;
+            }
+        }
+
         public TransactionModel NewTransaction { get; set; }
 
         public TransactionModel SelectedTransaction { get; set; }
@@ -88,17 +111,21 @@ namespace mymoneytracker.ViewModels
         {
             try
             {
-                if (TransactionDirection.Contains("Outflow"))
+                if (NewTransaction.Error == null || NewTransaction.Error == "")
                 {
-                    NewTransaction.Amount = -Math.Abs(NewTransaction.Amount);
-                } else
-                {
-                    NewTransaction.Amount = Math.Abs(NewTransaction.Amount);
-                }
+                    if (TransactionDirection.Contains("Outflow"))
+                    {
+                        NewTransaction.Amount = -Math.Abs(NewTransaction.Amount);
+                    }
+                    else
+                    {
+                        NewTransaction.Amount = Math.Abs(NewTransaction.Amount);
+                    }
 
-                SqliteDataAccess.SaveTransaction(NewTransaction);                
+                    SqliteDataAccess.SaveTransaction(NewTransaction);
 
-                RefreshData();
+                    RefreshData();
+                }                
             }
             catch (Exception ex)
             {
@@ -122,13 +149,18 @@ namespace mymoneytracker.ViewModels
         public void AddRule()
         {
             try
-            {               
-                if (NewRule.Direction == null)
+            {
+                if (NewRule.Error == null || NewRule.Error == "")
                 {
-                    throw new ArgumentException("Must select rule direction");
-                }
-                SqliteDataAccess.SaveRule(NewRule);
-                RefreshData();                
+                    if (NewRule.Direction == null)
+                    {
+                        throw new ArgumentException("Must select rule direction");
+                    }
+
+                    SqliteDataAccess.SaveRule(NewRule);
+
+                    RefreshData();
+                }                
             }
             catch (Exception ex)
             {

@@ -36,41 +36,41 @@ namespace mymoneytracker
 
         private void BtnAddTransaction_Click(object sender, RoutedEventArgs e)
         {
-            // validations
-            if (viewModel.NewTransaction.Date.CompareTo(System.DateTime.Now) > 0)
-            {
-                viewModel.NewTransaction.Date = System.DateTime.Now;
-                errorContent.Content = "No future dates!";
-                return;
-            }
-            if (viewModel.NewTransaction.Payee == "" || viewModel.NewTransaction.Payee == "Payee")
-            {
-                viewModel.NewTransaction.Payee = "Payee";
-                errorContent.Content = "Must provide Payee!";
-                return;
-            }
-            if (viewModel.NewTransaction.Amount == 0)
-            {
-                errorContent.Content = "Must provide Amount!";
-                return;
-            }
-            if (viewModel.NewTransaction.Category == "Category")
-            {
-                viewModel.NewTransaction.Category = "";
-            }
-            if (viewModel.NewTransaction.Custom_notes == "Notes")
-            {
-                viewModel.NewTransaction.Custom_notes = "";
-            }
+            //TODO Remove/add to models
+            //if (viewModel.NewTransaction.Date.CompareTo(System.DateTime.Now) > 0)
+            //{
+            //    viewModel.NewTransaction.Date = System.DateTime.Now;
+            //    errorContent.Content = "No future dates!";
+            //    return;
+            //}
+            //if (viewModel.NewTransaction.Payee == "" || viewModel.NewTransaction.Payee == "Payee")
+            //{
+            //    viewModel.NewTransaction.Payee = "Payee";
+            //    errorContent.Content = "Must provide Payee!";
+            //    return;
+            //}
+            //if (viewModel.NewTransaction.Amount == 0)
+            //{
+            //    errorContent.Content = "Must provide Amount!";
+            //    return;
+            //}
+            //if (viewModel.NewTransaction.Category == "Category")
+            //{
+            //    viewModel.NewTransaction.Category = "";
+            //}
+            //if (viewModel.NewTransaction.Custom_notes == "Notes")
+            //{
+            //    viewModel.NewTransaction.Custom_notes = "";
+            //}
 
             viewModel.AddTrans(cbDirectionTransaction.Text);
             // refresh current balance label
             BalanceLabel.GetBindingExpression(Label.ContentProperty).UpdateTarget();
-            tbAmount.Text = "0";
-            tbPayee.Text = "Payee";
-            tbCategory.Text = "Category";
-            tbNotes.Text = "Notes";
-            errorContent.Content = "";
+            //tbAmount.Text = "0";
+            //tbPayee.Text = "Payee";
+            //tbCategory.Text = "Category";
+            //tbNotes.Text = "Notes";
+            //errorContent.Content = "";
         }
         private void DeleteTransactionButtonClick(object sender, RoutedEventArgs e)
         {
@@ -81,32 +81,32 @@ namespace mymoneytracker
 
         private void BtnAddRule_Click(object sender, RoutedEventArgs e)
         {
-
-            if (viewModel.NewRule.Rule_name == "Rule Name" || viewModel.NewRule.Rule_name == "")
-            {
-                ruleErrorContent.Content = "Must provide rule name!";
-                return;
-            }
-            if (viewModel.NewRule.Category == "Category" || viewModel.NewRule.Category == "")
-            {
-                ruleErrorContent.Content = "Must provide rule category!";
-                return;
-            }
-            if (viewModel.NewRule.Payee_regex == "Match Text" || viewModel.NewRule.Payee_regex == "")
-            {
-                ruleErrorContent.Content = "Must provide match text!";
-                return;
-            }
-            if(cbDirectionRule.Text == "")
-            {
-                ruleErrorContent.Content = "Must pick rule direction!";
-                return;
-            }
+            //Todo Remove/Move to Model
+            //if (viewModel.NewRule.Rule_name == "Rule Name" || viewModel.NewRule.Rule_name == "")
+            //{
+            //    ruleErrorContent.Content = "Must provide rule name!";
+            //    return;
+            //}
+            //if (viewModel.NewRule.Category == "Category" || viewModel.NewRule.Category == "")
+            //{
+            //    ruleErrorContent.Content = "Must provide rule category!";
+            //    return;
+            //}
+            //if (viewModel.NewRule.Payee_regex == "Match Text" || viewModel.NewRule.Payee_regex == "")
+            //{
+            //    ruleErrorContent.Content = "Must provide match text!";
+            //    return;
+            //}
+            //if(cbDirectionRule.Text == "")
+            //{
+            //    ruleErrorContent.Content = "Must pick rule direction!";
+            //    return;
+            //}
 
             viewModel.AddRule();
-            tbRuleName.Text = "Rule Name";
-            tbRuleCategory.Text = "Category";
-            tbRuleMatchRegex.Text = "Match Text";
+            //tbRuleName.Text = "Rule Name";
+            //tbRuleCategory.Text = "Category";
+            //tbRuleMatchRegex.Text = "Match Text";
             ruleErrorContent.Content = "";
         }
         private void DeleteRuleButtonClick(object sender, RoutedEventArgs e)
