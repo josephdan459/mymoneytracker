@@ -19,8 +19,6 @@ namespace mymoneytracker
             var bgOffset = 0;
             var i = 0;
 
-
-
             if (File.Exists(reportPath))
             {
                 File.Delete(reportPath);

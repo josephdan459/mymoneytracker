@@ -113,8 +113,6 @@ namespace mymoneytracker
                         result = "Rule name can not be empty.";
                     if (this.Rule_name.Length > 20)
                         result = "Rule name is too long.";
-                    if (this.Rule_name == "Rule Name")
-                        result = "Must provide rule name.";                    
                 }
                 if (columnName == "Category")
                 {
@@ -122,17 +120,13 @@ namespace mymoneytracker
                         result = "Category name can not be empty.";
                     if (this.Category.Length > 20)
                         result = "Category name is too long.";
-                    if (this.Category == "Category")
-                        result = "Must provide category name.";
                 }
                 if (columnName == "Payee_regex")
                 {
                     if (this.Payee_regex.Length < 1)
-                        result = "Payee name can not be empty.";
+                        result = "Match text can not be empty.";
                     if (this.Payee_regex.Length > 20)
-                        result = "Payee name is too long.";
-                    if (this.Payee_regex == "Match Text")
-                        result = "Must provide rule match text.";
+                        result = "Match text is too long.";
                 }
                 if (columnName == "Direction")
                 {

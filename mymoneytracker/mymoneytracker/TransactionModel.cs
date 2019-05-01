@@ -122,11 +122,6 @@ namespace mymoneytracker
             get
             {
                 string result = string.Empty;
-                if (columnName == "Date")
-                {
-                    if (this.Date > DateTime.Now)
-                        result = "Transaction Date can not be a future date.";
-                }
                 if (columnName == "Amount")
                 {
                     if (this.Amount < 0)
