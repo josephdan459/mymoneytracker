@@ -370,6 +370,12 @@ namespace mymoneytracker
                                     this.Recent_Transactions.CancelEdit();
                                     return;
                                 }
+                                if (a <= 0)
+                                {
+                                    // amount cannot be negative
+                                    this.Recent_Transactions.CancelEdit();
+                                    return;
+                                }
                                 editedTransaction.Amount = a;
                                 break;
                             case "Payee":
