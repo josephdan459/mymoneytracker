@@ -7,11 +7,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("mymoneytracker")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("MyMoneyTracker")]
+[assembly: AssemblyDescription("Personal Finance Application")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("mymoneytracker")]
+[assembly: AssemblyCompany("Heap Stackers")]
+[assembly: AssemblyProduct("MyMoneyTracker")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
