@@ -136,8 +136,6 @@ namespace mymoneytracker
                 }
                 if (columnName == "Category")
                 {
-                    if (this.Category.Length < 1)
-                        result = "Category name can not be empty.";
                     if (this.Category.Length > 20)
                         result = "Category name is too long.";
                 }
