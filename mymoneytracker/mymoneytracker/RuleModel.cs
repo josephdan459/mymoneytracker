@@ -109,24 +109,24 @@ namespace mymoneytracker
                 string result = string.Empty;
                 if (columnName == "Rule_name")
                 {
-                    if (this.Rule_name.Length < 1 /*|| this.Rule_name == "Rule Name"*/)
+                    if (this.Rule_name.Length < 1)
                         result = "Rule name can not be empty.";
                     if (this.Rule_name.Length > 20)
                         result = "Rule name is too long.";
                 }
                 if (columnName == "Category")
                 {
-                    if (this.Category.Length < 1 /*|| this.Category == "Category"*/)
+                    if (this.Category.Length < 1)
                         result = "Category name can not be empty.";
                     if (this.Category.Length > 20)
                         result = "Category name is too long.";
                 }
                 if (columnName == "Payee_regex")
                 {
-                    if (this.Payee_regex.Length < 1 /*|| this.Payee_regex == "Match Text"*/)
-                        result = "Payee name can not be empty.";
+                    if (this.Payee_regex.Length < 1)
+                        result = "Match text can not be empty.";
                     if (this.Payee_regex.Length > 20)
-                        result = "Payee name is too long.";
+                        result = "Match text is too long.";
                 }
                 if (columnName == "Direction")
                 {

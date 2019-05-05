@@ -122,11 +122,6 @@ namespace mymoneytracker
             get
             {
                 string result = string.Empty;
-                if (columnName == "Date")
-                {
-                    if (this.Date > DateTime.Now)
-                        result = "Transaction Date can not be a future date.";
-                }
                 if (columnName == "Amount")
                 {
                     if (this.Amount < 0)
@@ -141,8 +136,6 @@ namespace mymoneytracker
                 }
                 if (columnName == "Category")
                 {
-                    if (this.Category.Length < 1)
-                        result = "Category name can not be empty.";
                     if (this.Category.Length > 20)
                         result = "Category name is too long.";
                 }
