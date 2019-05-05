@@ -18,10 +18,10 @@ namespace mymoneytracker
         private string _payee;
         private decimal _amount;
         private decimal _balance;
+        private string _direction;
         private string _category;
         private string _custom_notes;
         private string _error;
-
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
         #region Properties
@@ -68,6 +68,21 @@ namespace mymoneytracker
                 if (value != _balance)
                 {
                     _balance = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string Direction
+        {
+            get
+            {
+                return _direction;
+            }
+            set
+            {
+                if (value != _direction)
+                {
+                    _direction = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -163,10 +178,10 @@ namespace mymoneytracker
             Payee = "Payee";
             Amount = 0;
             Category = "Category";
+            Direction = "Outflow";
             Custom_notes = "Notes";
             Error = "";
-        }
-       
+        }       
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

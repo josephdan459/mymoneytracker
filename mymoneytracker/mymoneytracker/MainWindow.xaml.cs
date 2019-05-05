@@ -19,7 +19,6 @@ namespace mymoneytracker
     {
         private static ViewModels.MainViewModel viewModel;
         private bool importing;
-
         private List<TransactionModel> imported;
 
         public MainWindow()
@@ -33,7 +32,6 @@ namespace mymoneytracker
             this.importing = false;
             this.imported = null;
         }
-
         private void BtnAddTransaction_Click(object sender, RoutedEventArgs e)
         {
             //TODO Remove/add to models
@@ -78,7 +76,6 @@ namespace mymoneytracker
             // refresh current balance label
             BalanceLabel.GetBindingExpression(Label.ContentProperty).UpdateTarget();
         }
-
         private void BtnAddRule_Click(object sender, RoutedEventArgs e)
         {
             //Todo Remove/Move to Model
@@ -113,7 +110,6 @@ namespace mymoneytracker
         {
             viewModel.RemoveRule();
         }
-
         private void TbAmount_GotFocus(object sender, RoutedEventArgs e)
         {
             tbAmount.Text = "";
@@ -142,7 +138,6 @@ namespace mymoneytracker
         {
             tbRuleMatchRegex.Text = "";
         }
-
         private void TransactionTab_LostFocus(object sender, RoutedEventArgs e)
         {
             tbAmount.Text = "0";
@@ -150,14 +145,12 @@ namespace mymoneytracker
             tbCategory.Text = "Category";
             tbNotes.Text = "Notes";
         }
-
         private void RuleTab_LostFocus(object sender, RoutedEventArgs e)
         {
             tbRuleName.Text = "Rule Name";
             tbRuleMatchRegex.Text = "Match Text";
             tbRuleCategory.Text = "Category";
         }
-
         private void ReportButton_Click(object sender, RoutedEventArgs e)
         {
             int reportDays;
@@ -189,8 +182,6 @@ namespace mymoneytracker
                 Reports.CreateBasicReport(reportPath, viewModel.Saved.OrderByDescending(t => t.Date), reportDays, cb, ShowCategorySummaries.IsChecked.Value, ShowMostExpensivePurchases.IsChecked.Value, ReportInflow.IsChecked.Value, ReportOutflow.IsChecked.Value);
             }
         }
-
-
         private void ImportCsvBtnClick(object sender, RoutedEventArgs e)
         {
             if (this.importing)
@@ -289,8 +280,7 @@ namespace mymoneytracker
                 this.importing = true;
                 this.imported = results.it;
             }
-        }
-
+        }    
         private void CancelImportClick(object sender, RoutedEventArgs e)
         {
             CsvImportStatus.Content = "Status:";
@@ -301,7 +291,6 @@ namespace mymoneytracker
             this.imported = null;
             this.importing = false;
         }
-
         private void ConfirmImportClick(object sender, RoutedEventArgs e)
         {
 
@@ -326,7 +315,6 @@ namespace mymoneytracker
             this.imported = null;
             this.importing = false;           
         }
-
         // Updates DB when transaction cells are edited by user
         private void Transactions_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
@@ -408,7 +396,6 @@ namespace mymoneytracker
                 
             }
         }
-
         private void Rules_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             if (e.EditAction == DataGridEditAction.Commit)

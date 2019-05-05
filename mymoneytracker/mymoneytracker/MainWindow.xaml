@@ -66,7 +66,7 @@
                     </TextBox>
                     <ComboBox x:Name="cbDirectionTransaction" Height="23" Width="120" Canvas.Left="306" Canvas.Top="51" SelectedValuePath="Content" SelectedValue="{Binding NewTransaction.Direction, Mode=TwoWay}">
                         <ComboBoxItem Content="Inflow"/>
-                        <ComboBoxItem Content="Outflow" IsSelected="True" />
+                        <ComboBoxItem Content="Outflow"/>
                     </ComboBox>
                     <TextBox x:Name="tbNotes" Height="62" Canvas.Left="306" TextWrapping="Wrap" AcceptsReturn="True" Canvas.Top="85" Width="217" GotFocus="TbNotes_GotFocus" Style="{StaticResource TextErrorStyle}">
                         <Binding Path="NewTransaction.Custom_notes" Mode="TwoWay" ValidatesOnDataErrors="True" UpdateSourceTrigger="PropertyChanged">
@@ -205,11 +205,6 @@
                     <Label x:Name="CsvNumberPreview" Content="" Canvas.Left="19" Canvas.Top="481" Width="394" Height="28"/>
                 </Canvas>
             </TabItem>
-
-
-
         </TabControl>
-
-
     </Grid>
 </Window>
