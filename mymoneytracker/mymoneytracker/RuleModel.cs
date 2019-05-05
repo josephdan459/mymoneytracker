@@ -12,10 +12,7 @@ namespace mymoneytracker
     {        
         public RuleModel()
         {
-            Rule_name = "Rule Name";
-            Category = "Category";
-            Payee_regex = "Match Text";
-            Direction = "Outflow";
+            DefaultAll();
         }
         #region Fields
         private string _rule_name;
@@ -138,6 +135,15 @@ namespace mymoneytracker
             }
         }
         #endregion
+        public void DefaultAll()
+        {
+
+            Rule_name = "Rule Name";
+            Category = "Category";
+            Payee_regex = "Match Text";
+            Direction = "Outflow";
+            Error = "";
+        }
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

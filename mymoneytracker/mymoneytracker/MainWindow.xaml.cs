@@ -17,20 +17,15 @@ namespace mymoneytracker
 {
     public partial class MainWindow : Window
     {
-        private static ViewModels.MainViewModel viewModel;
-        private bool importing;
-        private List<TransactionModel> imported;
+        private static ViewModels.MainViewModel viewModel;                
 
         public MainWindow()
         {
             InitializeComponent();
-
             Recent_Transactions.CellEditEnding += Transactions_CellEditEnding;
 
             viewModel = new ViewModels.MainViewModel();
-            this.DataContext = viewModel;
-            this.importing = false;
-            this.imported = null;
+            this.DataContext = viewModel;                        
         }
         private void BtnAddTransaction_Click(object sender, RoutedEventArgs e)
         {
@@ -107,44 +102,48 @@ namespace mymoneytracker
         }
         private void TbAmount_GotFocus(object sender, RoutedEventArgs e)
         {
-            tbAmount.Text = "";
+            if(tbAmount.Text == "0")
+                tbAmount.Text = "";
         }
         private void TbPayee_GotFocus(object sender, RoutedEventArgs e)
         {
-            tbPayee.Text = "";
+            if(tbPayee.Text == "Payee")
+                tbPayee.Text = "";
         }
         private void TbCategory_GotFocus(object sender, RoutedEventArgs e)
-        {
-            tbCategory.Text = "";
+        {   
+            if (tbCategory.Text == "Category")
+                tbCategory.Text = "";
         }
         private void TbNotes_GotFocus(object sender, RoutedEventArgs e)
         {
-            tbNotes.Text = "";
+            if(tbNotes.Text == "Notes")
+                tbNotes.Text = "";
         }
         private void TbRuleName_GotFocus(object sender, RoutedEventArgs e)
         {
-            tbRuleName.Text = "";
+            if(tbRuleName.Text == "Rule Name")
+                tbRuleName.Text = "";
         }
         private void TbRuleCategory_GotFocus(object sender, RoutedEventArgs e)
         {
-            tbRuleCategory.Text = "";
+            if(tbRuleCategory.Text == "Category")
+                tbRuleCategory.Text = "";
         }
         private void TbRuleMatchRegex_GotFocus(object sender, RoutedEventArgs e)
         {
-            tbRuleMatchRegex.Text = "";
+            if(tbRuleMatchRegex.Text == "Match Text")
+                tbRuleMatchRegex.Text = "";
         }
         private void TransactionTab_LostFocus(object sender, RoutedEventArgs e)
         {
-            tbAmount.Text = "0";
-            tbPayee.Text = "Payee";
-            tbCategory.Text = "Category";
-            tbNotes.Text = "Notes";
+            viewModel.NewTransaction.DefaultAll();
+            errorContent.Content = "";            
         }
         private void RuleTab_LostFocus(object sender, RoutedEventArgs e)
         {
-            tbRuleName.Text = "Rule Name";
-            tbRuleMatchRegex.Text = "Match Text";
-            tbRuleCategory.Text = "Category";
+            viewModel.NewRule.DefaultAll();
+            ruleErrorContent.Content = "";           
         }
         private void ReportButton_Click(object sender, RoutedEventArgs e)
         {
@@ -179,7 +178,7 @@ namespace mymoneytracker
         }
         private void ImportCsvBtnClick(object sender, RoutedEventArgs e)
         {
-            if (this.importing)
+            if (viewModel.Importing)
             {
                 return;
             }
@@ -272,8 +271,8 @@ namespace mymoneytracker
                 CsvAmountPreview.Content = "Amount: " + results.it.First().Amount.ToString();
                 CsvPayeePreview.Content = "Payee: " + results.it.First().Payee.ToString();
                 CsvNumberPreview.Content = $"and {results.it.Count - 1} more...";
-                this.importing = true;
-                this.imported = results.it;
+                viewModel.Importing = true;
+                viewModel.Imported = results.it;
             }
         }    
         private void CancelImportClick(object sender, RoutedEventArgs e)
@@ -283,20 +282,20 @@ namespace mymoneytracker
             CsvAmountPreview.Content = "";
             CsvPayeePreview.Content = "";
             CsvNumberPreview.Content = "";
-            this.imported = null;
-            this.importing = false;
+            viewModel.Imported = null;
+            viewModel.Importing = false;
         }
         private void ConfirmImportClick(object sender, RoutedEventArgs e)
         {
 
-            if (!this.importing)
+            if (!viewModel.Importing)
             {
                 return;
             }
 
-            CsvImportStatus.Content = $"Status: Processing {this.imported.Count} new transactions...";
+            CsvImportStatus.Content = $"Status: Processing {viewModel.Imported.Count} new transactions...";
 
-            foreach (TransactionModel t in this.imported) {
+            foreach (TransactionModel t in viewModel.Imported) {
                 SqliteDataAccess.SaveTransaction(t);
             }
             viewModel.RefreshData();
@@ -306,9 +305,9 @@ namespace mymoneytracker
             CsvAmountPreview.Content = "";
             CsvPayeePreview.Content = "";
             CsvNumberPreview.Content = "";
-            CsvImportStatus.Content = $"Status: {this.imported.Count} transactions added";
-            this.imported = null;
-            this.importing = false;           
+            CsvImportStatus.Content = $"Status: {viewModel.Imported.Count} transactions added";
+            viewModel.Imported = null;
+            viewModel.Importing = false;           
         }
         // Updates DB when transaction cells are edited by user
         private void Transactions_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -358,12 +357,13 @@ namespace mymoneytracker
                                     this.Recent_Transactions.CancelEdit();
                                     return;
                                 }
-                                if (a <= 0)
-                                {
-                                    // amount cannot be negative
-                                    this.Recent_Transactions.CancelEdit();
-                                    return;
-                                }
+                                //Created bug; unable to maintain an outflow transaction on edit
+                                //if (a <= 0)
+                                //{
+                                //    // amount cannot be negative
+                                //    this.Recent_Transactions.CancelEdit();
+                                //    return;
+                                //}
                                 editedTransaction.Amount = a;
                                 break;
                             case "Payee":

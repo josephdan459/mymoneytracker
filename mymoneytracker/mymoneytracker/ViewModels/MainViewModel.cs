@@ -13,10 +13,12 @@ namespace mymoneytracker.ViewModels
     {        
         public MainViewModel()
         {
+            Importing = false;
             NewTransaction = new TransactionModel();
             NewRule = new RuleModel();
             Saved = new ObservableCollection<TransactionModel>();
             Rules = new ObservableCollection<RuleModel>();
+            Imported = null;
 
             var StartingBalance = SqliteDataAccess.GetStartingBalance();
             if (StartingBalance == Decimal.MinValue)
@@ -54,9 +56,7 @@ namespace mymoneytracker.ViewModels
                         err = "invalid input";
                         continue;
                     }
-                }
-                
-
+                }                
             }
 
             RefreshData();
@@ -66,6 +66,7 @@ namespace mymoneytracker.ViewModels
         #endregion
 
         #region Properties
+        public bool Importing { get; set; }
         public string ErrorMessage { get; set; }
 
         public string Error
@@ -104,6 +105,8 @@ namespace mymoneytracker.ViewModels
         public ObservableCollection<TransactionModel> Saved { get; set; }
 
         public ObservableCollection<RuleModel> Rules { get; set; }
+
+        public List<TransactionModel> Imported { get; set; }
         #endregion
 
         #region Methods
@@ -212,6 +215,7 @@ namespace mymoneytracker.ViewModels
             Saved.Clear();
             Rules.Clear();
             NewTransaction.DefaultAll();
+            NewRule.DefaultAll();
 
             foreach (var row in SqliteDataAccess.LoadTransactions())
             {

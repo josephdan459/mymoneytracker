@@ -136,12 +136,7 @@ namespace mymoneytracker
         {
             get
             {
-                string result = string.Empty;
-                if (columnName == "Amount")
-                {
-                    if (this.Amount < 0)
-                        result = "Amount can not be less than 0.";
-                }
+                string result = string.Empty;                
                 if (columnName == "Payee")
                 {
                     if (this.Payee.Length < 1)
@@ -151,13 +146,15 @@ namespace mymoneytracker
                 }
                 if (columnName == "Category")
                 {
+                    if (this.Category.Length < 1)
+                        result = "Category name can not be empty.";
                     if (this.Category.Length > 20)
                         result = "Category name is too long.";
                 }
                 if (columnName == "Custom_notes")
                 {
                     if (this.Custom_notes.Length > 140)
-                        result = "Category name is too long.";
+                        result = "Note is too long.";
                 }
                 Error = result;
                 return result;

@@ -29,7 +29,7 @@
                 <Canvas>
                     <Label Content="Here you can view all recent transactions and add new ones" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
 
-                    <DataGrid x:Name="Recent_Transactions" HorizontalAlignment="Left" Height="443" VerticalAlignment="Top" Width="872" ItemsSource="{Binding Saved}"
+                    <DataGrid x:Name="Recent_Transactions" HorizontalAlignment="Left" SelectionMode="Single" Height="443" VerticalAlignment="Top" Width="872" ItemsSource="{Binding Saved}"
                             SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="False" Canvas.Left="10" Canvas.Top="162" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*" Visibility="Hidden" IsReadOnly="True"/>
@@ -78,16 +78,16 @@
                     <Button x:Name="btnAddTransaction" Content="Add Transaction" Canvas.Left="10" Canvas.Top="127" Width="120" Click="BtnAddTransaction_Click"/>
                     <Button Content="Delete Transaction" Click="DeleteTransactionButtonClick" Canvas.Left="169" Canvas.Top="127" Width="120"/>
                     <Label Content="Current Balance:" Canvas.Left="749" Canvas.Top="18" Height="27" Width="103"/>
-                    <Label x:Name="errorContent" Content="" Canvas.Left="555" Canvas.Top="85" Height="42" Width="297"/>
+                    <Label x:Name="errorContent" Content="" Canvas.Left="555" Canvas.Top="85" Height="42" Width="297" Foreground="Red"/>
                     <Label Name="BalanceLabel" Content="{Binding Path=CurrentBalance, StringFormat=$###0.00}" Canvas.Left="749" Canvas.Top="33" Height="27" Width="103"/>
                 </Canvas>
             </TabItem>
             <TabItem Header="Rules" Selector.Unselected="RuleTab_LostFocus" >
                 <Canvas>
                     <Label Content="Here you can view all classification rules and add new ones" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
-                    <Label x:Name="ruleErrorContent" Content="" Canvas.Left="327" Canvas.Top="87" Height="42" Width="297"/>
+                    <Label x:Name="ruleErrorContent" Content="" Canvas.Left="327" Canvas.Top="87" Height="42" Width="297" Foreground="Red"/>
                     <Button Content="Delete Rule" Click="DeleteRuleButtonClick" Canvas.Left="169" Canvas.Top="127" Width="120"/>
-                    <DataGrid x:Name="Rules_List" CellEditEnding="Rules_CellEditEnding" HorizontalAlignment="Left" Height="443" VerticalAlignment="Top" Width="872" ItemsSource="{Binding Rules}"
+                    <DataGrid x:Name="Rules_List" SelectionMode="Single" CellEditEnding="Rules_CellEditEnding" HorizontalAlignment="Left" Height="443" VerticalAlignment="Top" Width="872" ItemsSource="{Binding Rules}"
                         SelectedItem="{Binding SelectedRule, Mode=TwoWay}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="False" Canvas.Left="10" Canvas.Top="162">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Rule Name" Binding="{Binding Rule_name}" Width="*" />
@@ -128,7 +128,7 @@
                 <Canvas>
                     <Label Content="Here you can run reports to track finance changes over time" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
                     <Label Content="Report window:" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="3" Canvas.Top="59"/>
-                    <TextBox x:Name="reportWindow" Height="23" TextWrapping="Wrap" Text="30" Width="48" GotFocus="TbRuleName_GotFocus" Canvas.Top="62" Canvas.Left="96" />
+                    <TextBox x:Name="reportWindow" Height="23" TextWrapping="Wrap" Text="30" Width="48" Canvas.Top="62" Canvas.Left="96" />
                     <Button Content="Save Report..." Width="141" Canvas.Left="10" Canvas.Top="226" Height="29" Click="ReportButton_Click"/>
                     <Label Content="days" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="146" Canvas.Top="59"/>
                     <CheckBox x:Name="ReportInflow" Content="Show inflow sources" Canvas.Top="153" Canvas.Left="11" IsChecked="True"/>
