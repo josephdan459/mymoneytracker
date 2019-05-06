@@ -11,6 +11,7 @@ using OfficeOpenXml.Style;
 
 namespace mymoneytracker
 {
+    // Generates .xlsx reports from transaction information in the database    
     class Reports
     {
         public static void CreateBasicReport(string reportPath, IEnumerable<TransactionModel> transactions, int reportDays, Decimal currentBalance, bool ShowCategorySummaries, bool ShowMostExpensivePurchases, bool ReportInflow, bool ReportOutflow)
@@ -31,6 +32,7 @@ namespace mymoneytracker
                 var ws = f.Workbook.Worksheets.Add($"My {reportDays}-day Budget Report");
 
                 // extract useful statistics from transaction data
+                // (Requirement 1.1.5)
                 DateTime cutoffDate = DateTime.Now.AddDays(-reportDays);
                 List<string> categories = transactions.Where(t => (t.Date.CompareTo(cutoffDate) >= 0)).Select(t => t.Category).Distinct().ToList();
                 List<string> inflowSources = transactions.Where(t => ((t.Date.CompareTo(cutoffDate) >= 0) && (t.Amount > 0))).Select(t => t.Payee).Distinct().ToList();
@@ -38,6 +40,7 @@ namespace mymoneytracker
                 
                 /////
                 // category summmaries - column showing gain/loss per category over X days
+                // (Requirement 2.2.1)
                 if (ShowCategorySummaries)
                 {
                     // format cells
@@ -73,6 +76,7 @@ namespace mymoneytracker
 
                 /////
                 // show top 10 largest expenses in last X days
+                // (Requirement 2.2.2)
                 if (ShowMostExpensivePurchases)
                 {
                     // format cells
@@ -106,6 +110,7 @@ namespace mymoneytracker
 
                 /////
                 // show sources of inflow over X days
+                // (Requirement 2.2.3)
                 if (ReportInflow)
                 {
                     // format cells
@@ -141,6 +146,7 @@ namespace mymoneytracker
 
                 /////
                 // show sources of outflow over X days
+                // (Requirement 2.2.4)
                 if (ReportOutflow)
                 {
                     // format cells
