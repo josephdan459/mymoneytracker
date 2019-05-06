@@ -58,10 +58,7 @@ namespace mymoneytracker
 
             // refresh current balance label
             BalanceLabel.GetBindingExpression(Label.ContentProperty).UpdateTarget();
-            tbAmount.Text = "0";
-            tbPayee.Text = "Payee";
-            tbCategory.Text = "Category";
-            tbNotes.Text = "Notes";
+            viewModel.NewTransaction.DefaultAll();
             errorContent.Content = "";
         }
         private void DeleteTransactionButtonClick(object sender, RoutedEventArgs e)
@@ -90,10 +87,7 @@ namespace mymoneytracker
             }
 
             viewModel.AddRule();
-
-            tbRuleName.Text = "Rule Name";
-            tbRuleCategory.Text = "Category";
-            tbRuleMatchRegex.Text = "Match Text";
+            viewModel.NewRule.DefaultAll();
             ruleErrorContent.Content = "";
         }
         private void DeleteRuleButtonClick(object sender, RoutedEventArgs e)
@@ -165,8 +159,8 @@ namespace mymoneytracker
             var dialog = new Microsoft.Win32.SaveFileDialog();
             dialog.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
             dialog.Title = "Save report to...";
-            dialog.DefaultExt = ".xls";
-            dialog.Filter = "xls|*.xls";
+            dialog.DefaultExt = ".xlsx";
+            dialog.Filter = "xlsx|*.xlsx";
 
             if (dialog.ShowDialog() == true)
             {
