@@ -36,7 +36,7 @@
                             <DataGridTextColumn Header="Date"  Binding="{Binding Date, StringFormat=d}" Width="*" SortDirection="Ascending" />
                             <DataGridTextColumn Header="Amount" Binding="{Binding Amount, StringFormat=$###0.00}" Width="*" />
                             <DataGridTextColumn Header="Payee" Binding="{Binding Payee}" Width="*" />
-                            <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*" />
+                            <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*" /> <!-- (Requirement 1.1.4) -->
                             <DataGridTextColumn Header="Notes" Binding="{Binding Custom_notes}" Width="*" />
                             <DataGridTextColumn Header="Account Balance" Binding="{Binding Balance, StringFormat=$###0.00}" Width="*" IsReadOnly="True" />
                         </DataGrid.Columns>
@@ -57,7 +57,7 @@
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox>
-                    <TextBox x:Name="tbCategory" Height="23" Canvas.Left="169" TextWrapping="Wrap" Canvas.Top="90" Width="120" GotFocus="TbCategory_GotFocus" Style="{StaticResource TextErrorStyle}">
+                    <TextBox x:Name="tbCategory" Height="23" Canvas.Left="169" TextWrapping="Wrap" Canvas.Top="90" Width="120" GotFocus="TbCategory_GotFocus" Style="{StaticResource TextErrorStyle}"> <!-- (Requirement 1.1.1) -->
                         <Binding Path="NewTransaction.Category" Mode="TwoWay" ValidatesOnDataErrors="True" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <ExceptionValidationRule></ExceptionValidationRule>
@@ -125,6 +125,7 @@
                 </Canvas>
             </TabItem>
             <TabItem Header="Reports">
+                <!-- (Requirement 2.2.0) -->
                 <Canvas>
                     <Label Content="Here you can run reports to track finance changes over time" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
                     <Label Content="Report window:" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="3" Canvas.Top="59"/>
@@ -138,11 +139,13 @@
                 </Canvas>
             </TabItem>
             <TabItem Header="Import">
+                <!-- (Requirement 2.1.0) -->
                 <Canvas>
                     <Label Content="Here you can import a list of transactions from a .csv file." HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
                     <Label Content="NOTE: The first line of the file must be actual data, not column names." HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="271"/>
                     <Label Content="Specify the format of your .csv file. Select the column number for each:" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="11" Canvas.Top="63"/>
                     <Label Content="Date" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="19" Canvas.Top="91"/>
+                    <!-- (Requirement 2.1.1) -->
                     <ComboBox x:Name="ImportCsvDateCol" Width="43" Canvas.Left="24" Canvas.Top="117" Height="24">
                         <ComboBoxItem>1</ComboBoxItem>
                         <ComboBoxItem>2</ComboBoxItem>

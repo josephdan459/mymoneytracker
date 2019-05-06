@@ -34,6 +34,8 @@ namespace mymoneytracker
             this.imported = null;
         }
 
+        // Save transaction from the user
+        // (Requirement 1.1.0)
         private void BtnAddTransaction_Click(object sender, RoutedEventArgs e)
         {
             if (viewModel.NewTransaction.Date.CompareTo(System.DateTime.Now) > 0)
@@ -78,6 +80,8 @@ namespace mymoneytracker
             BalanceLabel.GetBindingExpression(Label.ContentProperty).UpdateTarget();
         }
 
+        // Save rule from the user
+        // (Requirement 1.1.2)
         private void BtnAddRule_Click(object sender, RoutedEventArgs e)
         {
             
@@ -153,11 +157,13 @@ namespace mymoneytracker
             tbRuleCategory.Text = "Category";
         }
 
+        // Save report to file now
         private void ReportButton_Click(object sender, RoutedEventArgs e)
         {
             int reportDays;
             try
             {
+                // (Requirement 2.2.5)
                 reportDays = Convert.ToInt32(reportWindow.Text);
                 if (reportDays < 2) {
                     throw new Exception("");
@@ -181,6 +187,7 @@ namespace mymoneytracker
                 string reportPath = dialog.FileName;
                 string ss = viewModel.CurrentBalance.Replace("$", "");
                 Decimal cb = Convert.ToDecimal(ss);
+                // (Requirement 2.2.6)
                 Reports.CreateBasicReport(reportPath, viewModel.Saved.OrderByDescending(t => t.Date), reportDays, cb, ShowCategorySummaries.IsChecked.Value, ShowMostExpensivePurchases.IsChecked.Value, ReportInflow.IsChecked.Value, ReportOutflow.IsChecked.Value);
             }
         }
@@ -264,11 +271,13 @@ namespace mymoneytracker
                 }                
                 catch
                 {
+                    // (Requirement 2.1.3)
                     CsvImportStatus.Content = "Import failed!";
                     return;
                 }
             } else
             {
+                // (Requirement 2.1.3)
                 CsvImportStatus.Content = "Invalid import selection";
                 return;
             }
@@ -277,6 +286,7 @@ namespace mymoneytracker
             if (results.status == CsvImport.successStatus)
             {
                 // show preview of first transaction
+                // (Requirement 2.1.2)
                 CsvDatePreview.Content = "Date: " + results.it.First().Date.ToString();
                 CsvAmountPreview.Content = "Amount: " + results.it.First().Amount.ToString();
                 CsvPayeePreview.Content = "Payee: " + results.it.First().Payee.ToString();

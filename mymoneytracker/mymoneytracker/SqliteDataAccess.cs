@@ -26,6 +26,8 @@ namespace mymoneytracker
         private static string deleteRuleByNameQuery = "delete from Rules where Rule_name = @name";
 
 
+        // Return current transactions stored in DB
+        // (Requirement 1.0.1)
         public static List<TransactionModel> LoadTransactions()
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
@@ -35,6 +37,8 @@ namespace mymoneytracker
             }
         }
 
+        // Return current rules stored in DB
+        // (Requirement 1.0.1)
         public static List<RuleModel> LoadRules()
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
@@ -44,6 +48,7 @@ namespace mymoneytracker
             }
         }
 
+        // Get starting balance of user's account
         public static Decimal GetStartingBalance()
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
@@ -58,6 +63,8 @@ namespace mymoneytracker
             }
         }
 
+
+        // Set or update starting balance of user's account
         public static void SetStartingBalance(Decimal sb)
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
@@ -66,7 +73,8 @@ namespace mymoneytracker
             }
         }
 
-
+        // Add new transaction 
+        // (Requirement 1.0.3)
         public static void SaveTransaction(TransactionModel transaction)
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
@@ -75,6 +83,8 @@ namespace mymoneytracker
             }
         }
 
+        // Edit transaction 
+        // (Requirement 1.0.5)
         public static void UpdateTransaction(TransactionModel transaction)
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
@@ -83,6 +93,8 @@ namespace mymoneytracker
             }
         }
 
+        // Add new rule
+        // (Requirement 1.0.4)
         public static void SaveRule(RuleModel rule)
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
@@ -91,6 +103,8 @@ namespace mymoneytracker
             }
         }
 
+        // Edit rule
+        // (Requirement 1.0.6)
         public static void UpdateRule(RuleModel rule)
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
@@ -99,6 +113,7 @@ namespace mymoneytracker
             }
         }
 
+        // Delete rule by its internal ID
         public static void DeleteTransactionById(int id)
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
@@ -107,6 +122,7 @@ namespace mymoneytracker
             }
         }
 
+        // Delete rule by its name
         public static void DeleteRuleByName(string name)
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
@@ -115,12 +131,11 @@ namespace mymoneytracker
             }
         }
 
+        // Return connection string pointing to local DB in program folder
+        // (Requirement 1.0.0)
         private static string LoadConnectionString(string id = "Default")
         {
             string cs = ConfigurationManager.ConnectionStrings[id].ConnectionString;
-            string dbPathRel = cs.Split('=', ';')[1].Substring(2);
-            string dbPathAbs = Path.Combine(Directory.GetCurrentDirectory(), dbPathRel);
-            Console.WriteLine($"I loaded DB {dbPathAbs} from relative path {dbPathRel} from connection string {cs}");
             return cs;
         }
 

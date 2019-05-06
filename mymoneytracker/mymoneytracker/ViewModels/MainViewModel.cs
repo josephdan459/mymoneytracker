@@ -19,8 +19,9 @@ namespace mymoneytracker.ViewModels
             Rules = new ObservableCollection<RuleModel>();
 
             var StartingBalance = SqliteDataAccess.GetStartingBalance();
+            // (Requirement 1.0.2)
             if (StartingBalance == Decimal.MinValue)
-            {
+            {                
                 var set = false;
                 var err = "";
 
