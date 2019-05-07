@@ -20,7 +20,8 @@ namespace mymoneytracker
                 balance += transaction.Amount;
                 transaction.Balance = balance;                
 
-                // apply category to transaction
+                // apply category to transaction, only if not manually set
+                // (Requirement 1.1.3)
                 if (transaction.Category == null || transaction.Category == "")
                 {
                     CategorizeTransaction(transaction, rules);
