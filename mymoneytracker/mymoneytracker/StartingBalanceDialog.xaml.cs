@@ -34,5 +34,10 @@ namespace mymoneytracker
         {
             DialogResult = true;
         }
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+            
+        }
     }
 }

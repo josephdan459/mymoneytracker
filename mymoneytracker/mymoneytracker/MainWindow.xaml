@@ -29,7 +29,7 @@
                 <Canvas>
                     <Label Content="Here you can view all recent transactions and add new ones" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
 
-                    <DataGrid x:Name="Recent_Transactions" HorizontalAlignment="Left" SelectionMode="Single" Height="443" VerticalAlignment="Top" Width="872" ItemsSource="{Binding Saved}"
+                    <DataGrid x:Name="Recent_Transactions" CanUserDeleteRows="False" HorizontalAlignment="Left" SelectionMode="Single" Height="443" VerticalAlignment="Top" Width="872" ItemsSource="{Binding Saved}"
                             SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="False" Canvas.Left="10" Canvas.Top="162" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*" Visibility="Hidden" IsReadOnly="True"/>
@@ -44,7 +44,7 @@
                     <DatePicker x:Name="dpDate" Canvas.Left="10" Canvas.Top="50" Width="120" SelectedDate="{Binding NewTransaction.Date, Mode=TwoWay}"/>
 
                     <TextBox x:Name="tbAmount" Height="23" Canvas.Left="10" TextWrapping="Wrap" Canvas.Top="90" Width="120" GotFocus="TbAmount_GotFocus" Style="{StaticResource TextErrorStyle}">
-                        <Binding Path="NewTransaction.Amount" Mode="TwoWay" ValidatesOnDataErrors="True" UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="NewTransaction.Amount" Mode="TwoWay" StringFormat="$###0.00" ValidatesOnDataErrors="True" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <ExceptionValidationRule></ExceptionValidationRule>
                             </Binding.ValidationRules>
@@ -87,7 +87,7 @@
                     <Label Content="Here you can view all classification rules and add new ones" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
                     <Label x:Name="ruleErrorContent" Content="" Canvas.Left="327" Canvas.Top="87" Height="42" Width="297" Foreground="Red"/>
                     <Button Content="Delete Rule" Click="DeleteRuleButtonClick" Canvas.Left="169" Canvas.Top="127" Width="120"/>
-                    <DataGrid x:Name="Rules_List" SelectionMode="Single" CellEditEnding="Rules_CellEditEnding" HorizontalAlignment="Left" Height="443" VerticalAlignment="Top" Width="872" ItemsSource="{Binding Rules}"
+                    <DataGrid x:Name="Rules_List" SelectionMode="Single" CanUserDeleteRows="False" CellEditEnding="Rules_CellEditEnding" HorizontalAlignment="Left" Height="443" VerticalAlignment="Top" Width="872" ItemsSource="{Binding Rules}"
                         SelectedItem="{Binding SelectedRule, Mode=TwoWay}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="False" Canvas.Left="10" Canvas.Top="162">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Rule Name" Binding="{Binding Rule_name}" Width="*" />

@@ -96,7 +96,7 @@ namespace mymoneytracker
         }
         private void TbAmount_GotFocus(object sender, RoutedEventArgs e)
         {
-            if(tbAmount.Text == "0")
+            if(tbAmount.Text == "$0.00")
                 tbAmount.Text = "";
         }
         private void TbPayee_GotFocus(object sender, RoutedEventArgs e)

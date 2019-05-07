@@ -53,8 +53,8 @@ namespace mymoneytracker.ViewModels
                     }
                     else
                     {
-                        err = "invalid input";
-                        continue;
+                        set = true;
+                        System.Windows.Application.Current.Shutdown();
                     }
                 }                
             }
